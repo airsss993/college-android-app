@@ -6,7 +6,6 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.json.Json
 
 object HttpClient {
     val instance = HttpClient(CIO) {
