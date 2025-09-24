@@ -1,7 +1,7 @@
 package ru.dzhaparidze.collegeapp.features.schedule.utils
 
 object GroupSubgroupCompatibility {
-    private const val allSubgroup = "*"
+    private const val ALL_SUBGROUP = "*"
     private val firstYearSubgroups = listOf("Подгр1", "Подгр2", "Подгр3", "Подгр4")
     private val profiles = listOf("BE", "FE", "GD", "PM", "SA", "CD")
     private val englishByYear = mapOf(
@@ -12,11 +12,40 @@ object GroupSubgroupCompatibility {
     )
 
     fun getYear(group: String): String? {
-
+        val components = group.split(Regex("[^0-9]")).filter { it.isNotEmpty() }
+        return components.firstOrNull { it.length == 2 }
     }
 
     fun availableSubgroups(group: String): List<String> {
+        val year = getYear(group) ?: return listOf(ALL_SUBGROUP)
 
+        val subgroups = mutableListOf(ALL_SUBGROUP)
+
+        when (year) {
+            "25" -> {
+                subgroups.addAll(firstYearSubgroups)
+                subgroups.addAll(englishByYear["25"] ?: emptyList())
+            }
+            "24", "23", "22" -> {
+                subgroups.addAll(profiles)
+                subgroups.addAll(englishByYear[year] ?: emptyList())
+            }
+        }
+
+        return subgroups
+    }
+
+    fun isValidSubgroup(subgroup: String, group: String): Boolean {
+        val availableSubgroups = availableSubgroups(group)
+        return availableSubgroups.contains(subgroup)
+    }
+
+    fun validatedSubgroup(current: String, group: String): String {
+        return if (isValidSubgroup(current, group)) {
+            current
+        } else {
+            ALL_SUBGROUP
+        }
     }
 
 }
