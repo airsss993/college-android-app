@@ -16,10 +16,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import ru.dzhaparidze.collegeapp.features.schedule.views.ScheduleScreen
-import ru.dzhaparidze.collegeapp.features.schedule.views.SettingsScreen
+import ru.dzhaparidze.collegeapp.features.settings.views.SettingsScreen
 
 enum class Screen { SETTINGS, SCHEDULE }
+
 @Composable
 fun MainScreen() {
     val currentScreen = remember { mutableStateOf(Screen.SCHEDULE) }
@@ -30,7 +32,7 @@ fun MainScreen() {
             NavigationBar {
                 // РАСПИСАНИЕ
                 NavigationBarItem(
-                    onClick = { currentScreen.value = Screen.SCHEDULE},
+                    onClick = { currentScreen.value = Screen.SCHEDULE },
                     icon = {
                         Icon(
                             Icons.Default.DateRange,
@@ -43,7 +45,7 @@ fun MainScreen() {
 
                 // НАСТРОЙКИ
                 NavigationBarItem(
-                    onClick = { currentScreen.value = Screen.SETTINGS},
+                    onClick = { currentScreen.value = Screen.SETTINGS },
                     icon = {
                         Icon(
                             Icons.Default.Settings,
@@ -59,7 +61,8 @@ fun MainScreen() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddings),
+                .padding(paddings)
+                .padding(horizontal = 15.dp),
             contentAlignment = Alignment.Center
 
         ) {
