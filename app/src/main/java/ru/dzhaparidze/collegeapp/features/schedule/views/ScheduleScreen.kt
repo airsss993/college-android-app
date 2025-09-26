@@ -9,14 +9,15 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
 import androidx.core.content.edit
+import ru.dzhaparidze.collegeapp.features.schedule.data.ScheduleAPI
+import ru.dzhaparidze.collegeapp.features.schedule.data.ScheduleRepository
 import ru.dzhaparidze.collegeapp.features.schedule.utils.GroupSubgroupCompatibility
 import ru.dzhaparidze.collegeapp.features.schedule.utils.GroupsCatalog
+import ru.dzhaparidze.collegeapp.features.schedule.viewmodels.ScheduleViewModel
 
 enum class TimePeriod(val displayName: String) {
     TODAY("Сегодня"),
@@ -24,15 +25,20 @@ enum class TimePeriod(val displayName: String) {
     WEEK("Неделя")
 }
 
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScheduleScreen() {
+    val scheduleAPI = ScheduleAPI()
+    val repository = ScheduleRepository(scheduleAPI)
+    val viewModel = remember { ScheduleViewModel(repository) }
     val context = LocalContext.current
     val prefs = remember {
         context.getSharedPreferences("schedule_settings", android.content.Context.MODE_PRIVATE)
     }
+
+    val events by viewModel.events.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val errorMessage by viewModel.errorMessage.collectAsState()
 
     var showGroupSheet by remember { mutableStateOf(false) }
     var showSubgroupSheet by remember { mutableStateOf(false) }
@@ -44,6 +50,12 @@ fun ScheduleScreen() {
     LaunchedEffect(Unit) {
         selectedGroup = prefs.getString("selected_group", "ИТ25-11") ?: "ИТ25-11"
         selectedSubgroup = prefs.getString("selected_subgroup", "*") ?: "*"
+
+        viewModel.updateSchedule(
+            group = selectedGroup,
+            subgroup = selectedSubgroup,
+            timePeriod = selectedTimePeriod
+        )
     }
 
     Column(
@@ -144,7 +156,10 @@ fun ScheduleScreen() {
         ) {
             item {
                 Button(
-                    onClick = { selectedTimePeriod = TimePeriod.TODAY },
+                    onClick = {
+                        selectedTimePeriod = TimePeriod.TODAY
+                        viewModel.updateSchedule(timePeriod = TimePeriod.TODAY)
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (selectedTimePeriod == TimePeriod.TODAY)
                             androidx.compose.ui.graphics.Color(0xFF3B86F6)
@@ -160,14 +175,17 @@ fun ScheduleScreen() {
                 ) {
                     Text(
                         text = "Сегодня",
-                        fontSize = 14.sp
+                        fontSize = 15.sp
                     )
                 }
             }
 
             item {
                 Button(
-                    onClick = { selectedTimePeriod = TimePeriod.THREE_DAYS },
+                    onClick = {
+                        selectedTimePeriod = TimePeriod.THREE_DAYS
+                        viewModel.updateSchedule(timePeriod = TimePeriod.THREE_DAYS)
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (selectedTimePeriod == TimePeriod.THREE_DAYS)
                             androidx.compose.ui.graphics.Color(0xFF3B86F6)
@@ -183,14 +201,17 @@ fun ScheduleScreen() {
                 ) {
                     Text(
                         text = "3 дня",
-                        fontSize = 14.sp
+                        fontSize = 15.sp
                     )
                 }
             }
 
             item {
                 Button(
-                    onClick = { selectedTimePeriod = TimePeriod.WEEK },
+                    onClick = {
+                        selectedTimePeriod = TimePeriod.WEEK
+                        viewModel.updateSchedule(timePeriod = TimePeriod.WEEK)
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (selectedTimePeriod == TimePeriod.WEEK)
                             androidx.compose.ui.graphics.Color(0xFF3B86F6)
@@ -206,7 +227,7 @@ fun ScheduleScreen() {
                 ) {
                     Text(
                         text = "Неделя",
-                        fontSize = 14.sp
+                        fontSize = 15.sp
                     )
                 }
             }
@@ -232,17 +253,47 @@ fun ScheduleScreen() {
                         )
                         Text(
                             text = "Выбрать",
-                            fontSize = 14.sp
+                            fontSize = 15.sp
                         )
                     }
                 }
             }
         }
 
-        Box(
-            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
-        ) {
+        when {
+            isLoading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
 
+            errorMessage != null -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = errorMessage!!,
+                        color = androidx.compose.ui.graphics.Color.Red
+                    )
+                }
+            }
+
+            else -> {
+                LazyColumn(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    val eventsByDay = events.groupBy { it.day }
+
+                    items(eventsByDay.entries.toList()) { (day, dayEvents) ->
+                        DayScheduleCard(day = day, events = dayEvents)
+                    }
+                }
+            }
         }
 
         if (showGroupSheet) {
@@ -269,14 +320,20 @@ fun ScheduleScreen() {
                                     .padding(vertical = 4.dp)
                                     .clickable {
                                         selectedGroup = group
-                                        selectedSubgroup =
-                                            GroupSubgroupCompatibility.validatedSubgroup(
-                                                selectedSubgroup, group
-                                            )
+                                        val validatedSubgroup = GroupSubgroupCompatibility.validatedSubgroup(
+                                            selectedSubgroup, group
+                                        )
+                                        selectedSubgroup = validatedSubgroup
+
                                         prefs.edit {
                                             putString("selected_group", group)
-                                            putString("selected_subgroup", selectedSubgroup)
+                                            putString("selected_subgroup", validatedSubgroup)
                                         }
+
+                                        viewModel.updateSchedule(
+                                            group = group,
+                                            subgroup = validatedSubgroup
+                                        )
                                         showGroupSheet = false
                                     }, colors = CardDefaults.cardColors(
                                     containerColor = androidx.compose.ui.graphics.Color(0xFFFFFFFF)
@@ -319,6 +376,7 @@ fun ScheduleScreen() {
                                     .clickable {
                                         selectedSubgroup = subgroup
                                         prefs.edit { putString("selected_subgroup", subgroup) }
+                                        viewModel.updateSchedule(subgroup = subgroup)
                                         showSubgroupSheet = false
                                     }, colors = CardDefaults.cardColors(
                                     containerColor = androidx.compose.ui.graphics.Color(0xFFFFFFFF)
@@ -337,4 +395,5 @@ fun ScheduleScreen() {
         }
     }
 }
+
 

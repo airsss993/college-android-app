@@ -56,7 +56,7 @@ fun MainScreen() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddings),
-            contentAlignment = Alignment.Center
+//            contentAlignment = Alignment.Center
 
         ) {
             when (currentScreen.value) {

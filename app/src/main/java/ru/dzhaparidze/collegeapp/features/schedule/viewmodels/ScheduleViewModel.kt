@@ -70,42 +70,39 @@ class ScheduleViewModel(private val repository: ScheduleRepositoryInterface) : V
         }
     }
 
-    fun updateSelectedGroup(group: String) {
-        selectedGroup = group
-        loadSchedule()
-    }
+    fun updateSchedule(
+        group: String? = null,
+        subgroup: String? = null,
+        timePeriod: TimePeriod? = null,
+        startDate: String? = null,
+        endDate: String? = null
+    ) {
+        group?.let { selectedGroup = it }
+        subgroup?.let { selectedSubgroup = it }
 
-    fun updateSelectedSubgroup(subgroup: String) {
-        selectedSubgroup = subgroup
-        loadSchedule()
-    }
-
-    fun updateSelectedDates(startDate: String, endDate: String) {
-        selectedStartDate = startDate
-        selectedEndDate = endDate
-        loadSchedule()
-    }
-
-    fun clearError() {
-        _errorMessage.value = null
-    }
-
-    fun updateTimePeriod(timePeriod: TimePeriod) {
-        when (timePeriod) {
-            TimePeriod.TODAY -> {
-                val today = getCurrentDate()
-                updateSelectedDates(today, today)
-            }
-            TimePeriod.THREE_DAYS -> {
-                val today = getCurrentDate()
-                val threeDaysFromNow = getDatePlusDays(2)
-                updateSelectedDates(today, threeDaysFromNow)
-            }
-            TimePeriod.WEEK -> {
-                val today = getCurrentDate()
-                val oneWeekFromNow = getDatePlusDays(6)
-                updateSelectedDates(today, oneWeekFromNow)
+        timePeriod?.let { period ->
+            when (period) {
+                TimePeriod.TODAY -> {
+                    val today = getCurrentDate()
+                    selectedStartDate = today
+                    selectedEndDate = today
+                }
+                TimePeriod.THREE_DAYS -> {
+                    val today = getCurrentDate()
+                    selectedStartDate = today
+                    selectedEndDate = getDatePlusDays(2)
+                }
+                TimePeriod.WEEK -> {
+                    val today = getCurrentDate()
+                    selectedStartDate = today
+                    selectedEndDate = getDatePlusDays(6)
+                }
             }
         }
+
+        startDate?.let { selectedStartDate = it }
+        endDate?.let { selectedEndDate = it }
+
+        loadSchedule()
     }
 }

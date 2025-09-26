@@ -6,7 +6,7 @@ import java.util.*
 
 @Serializable
 data class ScheduleSubGroup(
-    val id: String = UUID.randomUUID().toString(),
+    val id: String? = null,
 
     @SerialName("SClID")
     val classId: String,

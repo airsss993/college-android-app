@@ -16,7 +16,10 @@ import kotlinx.serialization.json.Json
 object HttpClient {
     val instance = HttpClient(CIO) {
         install(ContentNegotiation) {
-            json()
+            json(Json {
+                ignoreUnknownKeys = true
+                isLenient = true
+            })
         }
         install(Logging) {
             LogLevel.INFO
