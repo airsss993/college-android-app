@@ -1,7 +1,7 @@
 package ru.dzhaparidze.collegeapp.features.schedule.models
 
 import kotlinx.serialization.SerialName
-import java.util.UUID
+import java.util.*
 
 data class ScheduleEvent(
     val id: String = UUID.randomUUID().toString(),

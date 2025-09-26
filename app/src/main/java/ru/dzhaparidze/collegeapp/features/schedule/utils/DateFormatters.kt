@@ -1,8 +1,7 @@
 package ru.dzhaparidze.collegeapp.features.schedule.utils
 
 import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.TimeZone
+import java.util.*
 
 object DateFormatters {
     val request: SimpleDateFormat by lazy {

@@ -1,6 +1,6 @@
 package ru.dzhaparidze.collegeapp.features.schedule.utils
 
-import java.util.Date
+import java.util.*
 
 data class DateRange(var start: Date, var end: Date) {
     init {

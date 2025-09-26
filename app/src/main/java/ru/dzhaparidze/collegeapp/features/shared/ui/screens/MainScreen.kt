@@ -1,22 +1,12 @@
 package ru.dzhaparidze.collegeapp.features.shared.ui.screens
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.*
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.unit.*
 import ru.dzhaparidze.collegeapp.features.schedule.views.ScheduleScreen
 import ru.dzhaparidze.collegeapp.features.settings.views.SettingsScreen
 
@@ -25,11 +15,15 @@ enum class Screen { SETTINGS, SCHEDULE }
 @Composable
 fun MainScreen() {
     val currentScreen = remember { mutableStateOf(Screen.SCHEDULE) }
+    val whiteThemeColor = 0xFFF2F2F6
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        containerColor = androidx.compose.ui.graphics.Color(whiteThemeColor),
         bottomBar = {
-            NavigationBar {
+            NavigationBar(
+                containerColor = androidx.compose.ui.graphics.Color(whiteThemeColor)
+            ) {
                 // РАСПИСАНИЕ
                 NavigationBarItem(
                     onClick = { currentScreen.value = Screen.SCHEDULE },
@@ -61,8 +55,7 @@ fun MainScreen() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddings)
-                .padding(horizontal = 15.dp),
+                .padding(paddings),
             contentAlignment = Alignment.Center
 
         ) {

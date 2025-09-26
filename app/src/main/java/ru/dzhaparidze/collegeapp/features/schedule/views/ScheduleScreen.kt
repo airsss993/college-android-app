@@ -1,57 +1,64 @@
 package ru.dzhaparidze.collegeapp.features.schedule.views
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.shape.*
+import androidx.compose.material.icons.*
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.*
+import androidx.compose.ui.text.font.*
+import androidx.compose.ui.unit.*
+import androidx.core.content.edit
 import ru.dzhaparidze.collegeapp.features.schedule.utils.GroupSubgroupCompatibility
 import ru.dzhaparidze.collegeapp.features.schedule.utils.GroupsCatalog
+
+enum class TimePeriod(val displayName: String) {
+    TODAY("Сегодня"),
+    THREE_DAYS("3 дня"),
+    WEEK("Неделя")
+}
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScheduleScreen() {
-    Column {
+    val context = LocalContext.current
+    val prefs = remember {
+        context.getSharedPreferences("schedule_settings", android.content.Context.MODE_PRIVATE)
+    }
+
+    var showGroupSheet by remember { mutableStateOf(false) }
+    var showSubgroupSheet by remember { mutableStateOf(false) }
+    var selectedGroup by remember { mutableStateOf("") }
+    var selectedSubgroup by remember { mutableStateOf("") }
+    var selectedTimePeriod by remember { mutableStateOf(TimePeriod.TODAY) }
+    var showDatePicker by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        selectedGroup = prefs.getString("selected_group", "ИТ25-11") ?: "ИТ25-11"
+        selectedSubgroup = prefs.getString("selected_subgroup", "*") ?: "*"
+    }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+    ) {
         Text(
             text = "Расписание",
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(vertical = 80.dp)
+            style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.ExtraBold,
+            modifier = Modifier.padding(top = 86.dp, bottom = 8.dp, start = 16.dp)
         )
 
-        var showGroupSheet by remember { mutableStateOf(false) }
-        var showSubgroupSheet by remember { mutableStateOf(false) }
-        var selectedGroup by remember { mutableStateOf("ИТ25-11") }
-        var selectedSubgroup by remember { mutableStateOf("*") }
-
+        // ВЫПАДАЮЩИЕ СПИСКИ С ГРУППАМИ
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Card(
@@ -59,7 +66,7 @@ fun ScheduleScreen() {
                     .weight(1f)
                     .clickable { showGroupSheet = true },
                 colors = CardDefaults.cardColors(
-                    containerColor = androidx.compose.ui.graphics.Color.DarkGray
+                    containerColor = androidx.compose.ui.graphics.Color.White
                 ),
                 shape = RoundedCornerShape(12.dp)
             ) {
@@ -78,7 +85,7 @@ fun ScheduleScreen() {
                         Text(
                             text = selectedGroup,
                             fontSize = 18.sp,
-                            color = androidx.compose.ui.graphics.Color.White,
+                            color = androidx.compose.ui.graphics.Color.Black,
                             fontWeight = FontWeight.Bold
                         )
                         Spacer(modifier = Modifier.weight(1f))
@@ -96,7 +103,7 @@ fun ScheduleScreen() {
                     .weight(1f)
                     .clickable { showSubgroupSheet = true },
                 colors = CardDefaults.cardColors(
-                    containerColor = androidx.compose.ui.graphics.Color.DarkGray
+                    containerColor = androidx.compose.ui.graphics.Color(0xFFFFFFFF)
                 ),
                 shape = RoundedCornerShape(12.dp)
             ) {
@@ -113,9 +120,9 @@ fun ScheduleScreen() {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = selectedSubgroup,
+                            text = if (selectedSubgroup == "*") "Все" else selectedSubgroup,
                             fontSize = 18.sp,
-                            color = androidx.compose.ui.graphics.Color.White,
+                            color = androidx.compose.ui.graphics.Color.Black,
                             fontWeight = FontWeight.Bold
                         )
                         Spacer(modifier = Modifier.weight(1f))
@@ -129,9 +136,111 @@ fun ScheduleScreen() {
             }
         }
 
+        // КНОПКИ ВЫБОРА ДАТЫ
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            contentPadding = PaddingValues(start = 16.dp)
+        ) {
+            item {
+                Button(
+                    onClick = { selectedTimePeriod = TimePeriod.TODAY },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (selectedTimePeriod == TimePeriod.TODAY)
+                            androidx.compose.ui.graphics.Color(0xFF3B86F6)
+                        else
+                            androidx.compose.ui.graphics.Color.Transparent,
+                        contentColor = if (selectedTimePeriod == TimePeriod.TODAY)
+                            androidx.compose.ui.graphics.Color.White
+                        else
+                            androidx.compose.ui.graphics.Color.Gray
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),
+                    contentPadding = PaddingValues(horizontal = 20.dp)
+                ) {
+                    Text(
+                        text = "Сегодня",
+                        fontSize = 14.sp
+                    )
+                }
+            }
+
+            item {
+                Button(
+                    onClick = { selectedTimePeriod = TimePeriod.THREE_DAYS },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (selectedTimePeriod == TimePeriod.THREE_DAYS)
+                            androidx.compose.ui.graphics.Color(0xFF3B86F6)
+                        else
+                            androidx.compose.ui.graphics.Color.Transparent,
+                        contentColor = if (selectedTimePeriod == TimePeriod.THREE_DAYS)
+                            androidx.compose.ui.graphics.Color.White
+                        else
+                            androidx.compose.ui.graphics.Color.Gray
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),
+                    contentPadding = PaddingValues(horizontal = 20.dp)
+                ) {
+                    Text(
+                        text = "3 дня",
+                        fontSize = 14.sp
+                    )
+                }
+            }
+
+            item {
+                Button(
+                    onClick = { selectedTimePeriod = TimePeriod.WEEK },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (selectedTimePeriod == TimePeriod.WEEK)
+                            androidx.compose.ui.graphics.Color(0xFF3B86F6)
+                        else
+                            androidx.compose.ui.graphics.Color.Transparent,
+                        contentColor = if (selectedTimePeriod == TimePeriod.WEEK)
+                            androidx.compose.ui.graphics.Color.White
+                        else
+                            androidx.compose.ui.graphics.Color.Gray
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),
+                    contentPadding = PaddingValues(horizontal = 20.dp)
+                ) {
+                    Text(
+                        text = "Неделя",
+                        fontSize = 14.sp
+                    )
+                }
+            }
+
+            item {
+                Button(
+                    onClick = { showDatePicker = true },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = androidx.compose.ui.graphics.Color(0xFFDCE6F7),
+                        contentColor = androidx.compose.ui.graphics.Color(0xFF3B86F6)
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),
+                    contentPadding = PaddingValues(horizontal = 20.dp)
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            Icons.Default.DateRange,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Text(
+                            text = "Выбрать",
+                            fontSize = 14.sp
+                        )
+                    }
+                }
+            }
+        }
+
         Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
         ) {
 
         }
@@ -160,11 +269,17 @@ fun ScheduleScreen() {
                                     .padding(vertical = 4.dp)
                                     .clickable {
                                         selectedGroup = group
-                                        selectedSubgroup = GroupSubgroupCompatibility.validatedSubgroup(selectedSubgroup, group)
+                                        selectedSubgroup =
+                                            GroupSubgroupCompatibility.validatedSubgroup(
+                                                selectedSubgroup, group
+                                            )
+                                        prefs.edit {
+                                            putString("selected_group", group)
+                                            putString("selected_subgroup", selectedSubgroup)
+                                        }
                                         showGroupSheet = false
-                                    },
-                                colors = CardDefaults.cardColors(
-                                    containerColor = androidx.compose.ui.graphics.Color.LightGray
+                                    }, colors = CardDefaults.cardColors(
+                                    containerColor = androidx.compose.ui.graphics.Color(0xFFFFFFFF)
                                 )
                             ) {
                                 Text(
@@ -203,14 +318,14 @@ fun ScheduleScreen() {
                                     .padding(vertical = 4.dp)
                                     .clickable {
                                         selectedSubgroup = subgroup
+                                        prefs.edit { putString("selected_subgroup", subgroup) }
                                         showSubgroupSheet = false
-                                    },
-                                colors = CardDefaults.cardColors(
-                                    containerColor = androidx.compose.ui.graphics.Color.LightGray
+                                    }, colors = CardDefaults.cardColors(
+                                    containerColor = androidx.compose.ui.graphics.Color(0xFFFFFFFF)
                                 )
                             ) {
                                 Text(
-                                    text = subgroup,
+                                    text = if (subgroup == "*") "Все" else subgroup,
                                     modifier = Modifier.padding(16.dp),
                                     style = MaterialTheme.typography.bodyLarge
                                 )

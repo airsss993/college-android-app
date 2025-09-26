@@ -1,23 +1,26 @@
 package ru.dzhaparidze.collegeapp.features.settings.views
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.text.font.*
+import androidx.compose.ui.unit.*
 
 @Composable
 fun SettingsScreen() {
     Column {
         Text(
             text = "Настройки",
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(vertical = 50.dp)
+            style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.ExtraBold,
+            modifier = Modifier.padding(start = 16.dp, top = 86.dp, end = 16.dp, bottom = 8.dp)
+        )
+
+        Text(
+            text = "Общие настройки",
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
         )
 
         Box(

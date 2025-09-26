@@ -1,19 +1,16 @@
 package ru.dzhaparidze.collegeapp.features.schedule.viewmodels
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 import ru.dzhaparidze.collegeapp.features.schedule.data.ScheduleRepositoryInterface
 import ru.dzhaparidze.collegeapp.features.schedule.models.ScheduleEvent
 import ru.dzhaparidze.collegeapp.features.schedule.utils.GroupsCatalog
+import ru.dzhaparidze.collegeapp.features.schedule.views.TimePeriod
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 class ScheduleViewModel(private val repository: ScheduleRepositoryInterface) : ViewModel() {
     private val _events = MutableStateFlow<List<ScheduleEvent>>(emptyList())
@@ -91,5 +88,24 @@ class ScheduleViewModel(private val repository: ScheduleRepositoryInterface) : V
 
     fun clearError() {
         _errorMessage.value = null
+    }
+
+    fun updateTimePeriod(timePeriod: TimePeriod) {
+        when (timePeriod) {
+            TimePeriod.TODAY -> {
+                val today = getCurrentDate()
+                updateSelectedDates(today, today)
+            }
+            TimePeriod.THREE_DAYS -> {
+                val today = getCurrentDate()
+                val threeDaysFromNow = getDatePlusDays(2)
+                updateSelectedDates(today, threeDaysFromNow)
+            }
+            TimePeriod.WEEK -> {
+                val today = getCurrentDate()
+                val oneWeekFromNow = getDatePlusDays(6)
+                updateSelectedDates(today, oneWeekFromNow)
+            }
+        }
     }
 }

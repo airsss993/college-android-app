@@ -1,6 +1,6 @@
 package ru.dzhaparidze.collegeapp.features.schedule.utils
 
-import java.util.Calendar
+import java.util.*
 
 object GroupsCatalog {
     val allGroups: List<String> = listOf(

@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.*
+import androidx.compose.ui.tooling.preview.*
 import ru.dzhaparidze.collegeapp.features.shared.ui.screens.MainScreen
 
 class MainActivity : ComponentActivity() {
