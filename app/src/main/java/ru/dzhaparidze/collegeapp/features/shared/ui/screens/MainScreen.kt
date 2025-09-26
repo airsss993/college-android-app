@@ -6,7 +6,6 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.unit.*
 import ru.dzhaparidze.collegeapp.features.schedule.views.ScheduleScreen
 import ru.dzhaparidze.collegeapp.features.settings.views.SettingsScreen
 

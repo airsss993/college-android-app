@@ -9,8 +9,10 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.text.font.*
+import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import androidx.core.content.edit
 import ru.dzhaparidze.collegeapp.features.schedule.data.ScheduleAPI
@@ -152,7 +154,7 @@ fun ScheduleScreen() {
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
-            contentPadding = PaddingValues(start = 16.dp)
+            contentPadding = PaddingValues(start = 16.dp, bottom = 10.dp)
         ) {
             item {
                 Button(
@@ -299,18 +301,54 @@ fun ScheduleScreen() {
         if (showGroupSheet) {
             ModalBottomSheet(
                 onDismissRequest = { showGroupSheet = false },
-                sheetState = rememberModalBottomSheetState()
+                sheetState = rememberModalBottomSheetState(),
+                containerColor = androidx.compose.ui.graphics.Color(0xFFF2F2F6),
+                dragHandle = null
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
-                    Text(
-                        text = "Выберите группу",
-                        style = MaterialTheme.typography.headlineSmall,
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 36.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier.weight(1f),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            Button(
+                                onClick = { showGroupSheet = false },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = androidx.compose.ui.graphics.Color(0xFFFBFBFF),
+                                    contentColor = androidx.compose.ui.graphics.Color.Black
+                                ),
+                                elevation = ButtonDefaults.buttonElevation(2.dp, 2.dp, 0.dp, 2.dp, 2.dp),
+                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                            ) {
+                                Text(
+                                    text = "Отмена",
+                                    fontSize = 16.sp
+                                )
+                            }
+                        }
+
+                        Box(
+                            modifier = Modifier.weight(2f),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Выбор группы",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp
+                            )
+                        }
+
+                        Box(modifier = Modifier.weight(1f))
+                    }
 
                     LazyColumn {
                         items(GroupsCatalog.allGroups) { group ->
@@ -320,9 +358,10 @@ fun ScheduleScreen() {
                                     .padding(vertical = 4.dp)
                                     .clickable {
                                         selectedGroup = group
-                                        val validatedSubgroup = GroupSubgroupCompatibility.validatedSubgroup(
-                                            selectedSubgroup, group
-                                        )
+                                        val validatedSubgroup =
+                                            GroupSubgroupCompatibility.validatedSubgroup(
+                                                selectedSubgroup, group
+                                            )
                                         selectedSubgroup = validatedSubgroup
 
                                         prefs.edit {
@@ -354,18 +393,54 @@ fun ScheduleScreen() {
         if (showSubgroupSheet) {
             ModalBottomSheet(
                 onDismissRequest = { showSubgroupSheet = false },
-                sheetState = rememberModalBottomSheetState()
+                sheetState = rememberModalBottomSheetState(),
+                containerColor = androidx.compose.ui.graphics.Color(0xFFF2F2F6),
+                dragHandle = null
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
-                    Text(
-                        text = "Выберите подгруппу",
-                        style = MaterialTheme.typography.headlineSmall,
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 36.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier.weight(1f),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            Button(
+                                onClick = { showSubgroupSheet = false },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = androidx.compose.ui.graphics.Color(0xFFFBFBFF),
+                                    contentColor = androidx.compose.ui.graphics.Color.Black
+                                ),
+                                elevation = ButtonDefaults.buttonElevation(2.dp, 2.dp, 0.dp, 2.dp, 2.dp),
+                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                            ) {
+                                Text(
+                                    text = "Отмена",
+                                    fontSize = 16.sp
+                                )
+                            }
+                        }
+
+                        Box(
+                            modifier = Modifier.weight(2f),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Выбор подгруппы",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp
+                            )
+                        }
+
+                        Box(modifier = Modifier.weight(1f))
+                    }
 
                     LazyColumn {
                         items(GroupSubgroupCompatibility.availableSubgroups(selectedGroup)) { subgroup ->

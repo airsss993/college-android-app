@@ -10,14 +10,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ru.dzhaparidze.collegeapp.features.schedule.models.ScheduleEvent
-import androidx.core.graphics.toColorInt
 
 @Composable
 fun EventCard(event: ScheduleEvent) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = Color(0xFFF2F2F6)
         ),
         shape = RoundedCornerShape(8.dp)
     ) {
@@ -29,11 +28,7 @@ fun EventCard(event: ScheduleEvent) {
                     .width(4.dp)
                     .height(60.dp)
                     .background(
-                        color = try {
-                            Color(event.color.toColorInt())
-                        } catch (e: Exception) {
-                            Color(0xFF3B86F6)
-                        },
+                        color = Color(0xFFBB3ED8),
                         shape = RoundedCornerShape(2.dp)
                     )
             )
