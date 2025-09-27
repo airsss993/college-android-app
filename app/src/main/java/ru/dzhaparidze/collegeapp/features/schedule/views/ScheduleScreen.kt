@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.text.font.*
+import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import androidx.core.content.edit
 import ru.dzhaparidze.collegeapp.features.schedule.data.ScheduleAPI
@@ -19,6 +20,7 @@ import ru.dzhaparidze.collegeapp.features.schedule.utils.GroupSubgroupCompatibil
 import ru.dzhaparidze.collegeapp.features.schedule.utils.GroupsCatalog
 import ru.dzhaparidze.collegeapp.features.schedule.viewmodels.ScheduleViewModel
 import ru.dzhaparidze.collegeapp.features.schedule.utils.DateFormatters
+import ru.dzhaparidze.collegeapp.features.schedule.utils.getFullSubgroupName
 import java.util.*
 
 enum class TimePeriod(val displayName: String) {
@@ -35,6 +37,7 @@ fun getDateRangeText(timePeriod: TimePeriod, weekOffset: Int = 0): String {
         TimePeriod.TODAY -> {
             DateFormatters.uiDate.format(today)
         }
+
         TimePeriod.THREE_DAYS -> {
             calendar.time = today
             calendar.add(Calendar.DAY_OF_MONTH, 2)
@@ -42,6 +45,7 @@ fun getDateRangeText(timePeriod: TimePeriod, weekOffset: Int = 0): String {
 
             "${DateFormatters.uiDate.format(today)} - ${DateFormatters.uiDate.format(endDate)}"
         }
+
         TimePeriod.WEEK -> {
             calendar.time = today
             calendar.firstDayOfWeek = Calendar.MONDAY
@@ -164,7 +168,9 @@ fun ScheduleScreen() {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = if (selectedSubgroup == "*") "Все" else selectedSubgroup,
+                            text = if (selectedSubgroup == "*") "Все" else getFullSubgroupName(
+                                selectedSubgroup
+                            ),
                             fontSize = 18.sp,
                             color = androidx.compose.ui.graphics.Color.Black,
                             fontWeight = FontWeight.Bold
@@ -338,14 +344,88 @@ fun ScheduleScreen() {
             }
 
             else -> {
-                LazyColumn(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    val eventsByDay = events.groupBy { it.day }
+                if (events.isEmpty()) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                Icons.Default.EventBusy,
+                                contentDescription = null,
+                                modifier = Modifier.size(80.dp),
+                                tint = androidx.compose.ui.graphics.Color.Gray
+                            )
 
-                    items(eventsByDay.entries.toList()) { (day, dayEvents) ->
-                        DayScheduleCard(day = day, events = dayEvents)
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Text(
+                                text = when (selectedTimePeriod) {
+                                    TimePeriod.TODAY -> "Нет занятий"
+                                    TimePeriod.THREE_DAYS -> "В ближайшие 3 дня нет занятий"
+                                    TimePeriod.WEEK -> "На этой неделе нет занятий"
+                                },
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = androidx.compose.ui.graphics.Color.Black,
+                                textAlign = TextAlign.Center
+                            )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(
+                                text = "На выбранные даты занятия не найдены",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = androidx.compose.ui.graphics.Color.Gray,
+                                textAlign = TextAlign.Center
+                            )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            if (selectedTimePeriod != TimePeriod.WEEK) {
+                                Button(
+                                    onClick = {
+                                        selectedTimePeriod = TimePeriod.WEEK
+                                        viewModel.updateSchedule(timePeriod = TimePeriod.WEEK)
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = androidx.compose.ui.graphics.Color(0xFF3B86F6),
+                                        contentColor = androidx.compose.ui.graphics.Color.White
+                                    ),
+                                    shape = RoundedCornerShape(20.dp),
+                                    contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp)
+                                ) {
+                                    Row(
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Icon(
+                                            Icons.Default.CalendarMonth,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(18.dp)
+                                        )
+                                        Text(
+                                            text = "Показать неделю",
+                                            fontWeight = FontWeight.Medium
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        val eventsByDay = events.groupBy { it.day }
+
+                        items(eventsByDay.entries.toList()) { (day, dayEvents) ->
+                            DayScheduleCard(day = day, events = dayEvents)
+                        }
                     }
                 }
             }
@@ -379,7 +459,13 @@ fun ScheduleScreen() {
                                     containerColor = androidx.compose.ui.graphics.Color(0xFFFBFBFF),
                                     contentColor = androidx.compose.ui.graphics.Color.Black
                                 ),
-                                elevation = ButtonDefaults.buttonElevation(2.dp, 2.dp, 0.dp, 2.dp, 2.dp),
+                                elevation = ButtonDefaults.buttonElevation(
+                                    2.dp,
+                                    2.dp,
+                                    0.dp,
+                                    2.dp,
+                                    2.dp
+                                ),
                                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
                             ) {
                                 Text(
@@ -471,7 +557,13 @@ fun ScheduleScreen() {
                                     containerColor = androidx.compose.ui.graphics.Color(0xFFFBFBFF),
                                     contentColor = androidx.compose.ui.graphics.Color.Black
                                 ),
-                                elevation = ButtonDefaults.buttonElevation(2.dp, 2.dp, 0.dp, 2.dp, 2.dp),
+                                elevation = ButtonDefaults.buttonElevation(
+                                    2.dp,
+                                    2.dp,
+                                    0.dp,
+                                    2.dp,
+                                    2.dp
+                                ),
                                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
                             ) {
                                 Text(
@@ -511,7 +603,9 @@ fun ScheduleScreen() {
                                 )
                             ) {
                                 Text(
-                                    text = if (subgroup == "*") "Все" else subgroup,
+                                    text = if (subgroup == "*") "Все" else getFullSubgroupName(
+                                        subgroup
+                                    ),
                                     modifier = Modifier.padding(16.dp),
                                     style = MaterialTheme.typography.bodyLarge
                                 )

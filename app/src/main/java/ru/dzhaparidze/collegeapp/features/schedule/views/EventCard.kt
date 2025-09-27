@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
 import ru.dzhaparidze.collegeapp.features.schedule.models.ScheduleEvent
+import ru.dzhaparidze.collegeapp.features.schedule.utils.getFullSubgroupName
 
 @Composable
 fun EventCard(event: ScheduleEvent) {
@@ -208,7 +209,7 @@ fun EventCard(event: ScheduleEvent) {
                                 ) {
                                     // НАЗВАНИЕ ПРОФИЛЯ
                                     Text(
-                                        text = subGroup.groupId,
+                                        text = getFullSubgroupName(subGroup.groupId),
                                         style = MaterialTheme.typography.titleSmall,
                                         fontWeight = FontWeight.Bold,
                                         color = Color.Black
