@@ -1,7 +1,5 @@
 package ru.dzhaparidze.collegeapp.features.schedule.views
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
@@ -20,8 +18,7 @@ import ru.dzhaparidze.collegeapp.features.schedule.data.ScheduleRepository
 import ru.dzhaparidze.collegeapp.features.schedule.utils.GroupSubgroupCompatibility
 import ru.dzhaparidze.collegeapp.features.schedule.utils.GroupsCatalog
 import ru.dzhaparidze.collegeapp.features.schedule.viewmodels.ScheduleViewModel
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import ru.dzhaparidze.collegeapp.features.schedule.utils.DateFormatters
 import java.util.*
 
 enum class TimePeriod(val displayName: String) {
@@ -30,38 +27,36 @@ enum class TimePeriod(val displayName: String) {
     WEEK("Неделя")
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun getDateRangeText(timePeriod: TimePeriod, weekOffset: Int = 0): String {
-    val today = LocalDate.now()
+    val today = Date()
+    val calendar = Calendar.getInstance()
 
     return when (timePeriod) {
         TimePeriod.TODAY -> {
-            val dayFormatter = DateTimeFormatter.ofPattern("d", Locale.getDefault())
-            val monthFormatter = DateTimeFormatter.ofPattern("MMM", Locale.forLanguageTag("ru"))
-            val dayOfWeekFormatter = DateTimeFormatter.ofPattern("E", Locale.forLanguageTag("ru"))
-
-            val day = today.format(dayFormatter)
-            val month = today.format(monthFormatter)
-            val dayOfWeek = today.format(dayOfWeekFormatter)
-
-            "$day $month., ${dayOfWeek.replaceFirstChar { it.uppercase() }}"
+            DateFormatters.uiDate.format(today)
         }
         TimePeriod.THREE_DAYS -> {
-            val formatter = DateTimeFormatter.ofPattern("dd.MM", Locale.getDefault())
-            val endDate = today.plusDays(2)
-            "${today.format(formatter)} - ${endDate.format(formatter)}"
+            calendar.time = today
+            calendar.add(Calendar.DAY_OF_MONTH, 2)
+            val endDate = calendar.time
+
+            "${DateFormatters.uiDate.format(today)} - ${DateFormatters.uiDate.format(endDate)}"
         }
         TimePeriod.WEEK -> {
-            val formatter = DateTimeFormatter.ofPattern("dd.MM", Locale.getDefault())
-            val startOfWeek = today.minusDays((today.dayOfWeek.value - 1).toLong())
-                .plusWeeks(weekOffset.toLong())
-            val endOfWeek = startOfWeek.plusDays(6)
-            "${startOfWeek.format(formatter)} - ${endOfWeek.format(formatter)}"
+            calendar.time = today
+            calendar.firstDayOfWeek = Calendar.MONDAY
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+            calendar.add(Calendar.WEEK_OF_YEAR, weekOffset)
+            val startOfWeek = calendar.time
+
+            calendar.add(Calendar.DAY_OF_MONTH, 6)
+            val endOfWeek = calendar.time
+
+            "${DateFormatters.uiDate.format(startOfWeek)} - ${DateFormatters.uiDate.format(endOfWeek)}"
         }
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScheduleScreen() {
@@ -188,8 +183,8 @@ fun ScheduleScreen() {
         // КНОПКИ ВЫБОРА ДАТЫ
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            contentPadding = PaddingValues(start = 16.dp, bottom = 10.dp)
+            horizontalArrangement = Arrangement.spacedBy(7.dp),
+            contentPadding = PaddingValues(start = 16.dp, bottom = 16.dp)
         ) {
             item {
                 Button(
@@ -298,12 +293,20 @@ fun ScheduleScreen() {
         }
 
         // ОТОБРАЖЕНИЕ ТЕКУЩЕЙ ДАТЫ
-        Box(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            contentAlignment = Alignment.Center
+                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
+            Icon(
+                Icons.Default.DateRange,
+                contentDescription = null,
+                tint = androidx.compose.ui.graphics.Color.Gray,
+                modifier = Modifier.size(16.dp)
+            )
+            Spacer(modifier = Modifier.width(6.dp))
             Text(
                 text = getDateRangeText(selectedTimePeriod, viewModel.selectedWeekOffset),
                 fontSize = 14.sp,

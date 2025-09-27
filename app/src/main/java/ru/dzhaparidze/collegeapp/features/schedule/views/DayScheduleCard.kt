@@ -37,11 +37,19 @@ fun DayScheduleCard(day: String, events: List<ScheduleEvent>) {
                     fontWeight = FontWeight.Bold
                 )
 
-                Text(
-                    text = "${events.size} ${getEventCountText(events.size)}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Gray
-                )
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0xFFF2F2F6)
+                    ),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text(
+                        text = "${events.size} ${getEventCountText(events.size)}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))

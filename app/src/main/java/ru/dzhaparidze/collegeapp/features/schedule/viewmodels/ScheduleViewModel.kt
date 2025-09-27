@@ -129,17 +129,26 @@ class ScheduleViewModel(private val repository: ScheduleRepositoryInterface) : V
                     viewModelScope.launch {
                         val currentWeekStart = getWeekStart(0)
                         val currentWeekEnd = getWeekEnd(0)
+                        val nextWeekStart = getWeekStart(1)
+                        val nextWeekEnd = getWeekEnd(1)
 
                         val calendar = java.util.Calendar.getInstance()
                         val today = calendar.get(java.util.Calendar.DAY_OF_WEEK)
 
-                        val useNextWeek = (today == java.util.Calendar.MONDAY) ||
-                                        !hasEventsInPeriod(currentWeekStart, currentWeekEnd)
+                        val useNextWeek = when {
+                            today == java.util.Calendar.MONDAY -> true
+
+                            today == java.util.Calendar.SATURDAY || today == java.util.Calendar.SUNDAY -> {
+                                hasEventsInPeriod(nextWeekStart, nextWeekEnd)
+                            }
+
+                            else -> !hasEventsInPeriod(currentWeekStart, currentWeekEnd)
+                        }
 
                         if (useNextWeek) {
                             selectedWeekOffset = 1
-                            selectedStartDate = getWeekStart(1)
-                            selectedEndDate = getWeekEnd(1)
+                            selectedStartDate = nextWeekStart
+                            selectedEndDate = nextWeekEnd
                         } else {
                             selectedWeekOffset = 0
                             selectedStartDate = currentWeekStart
