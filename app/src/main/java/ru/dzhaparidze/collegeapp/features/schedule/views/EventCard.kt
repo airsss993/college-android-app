@@ -1,11 +1,11 @@
 package ru.dzhaparidze.collegeapp.features.schedule.views
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
@@ -16,6 +16,8 @@ import ru.dzhaparidze.collegeapp.features.schedule.models.ScheduleEvent
 
 @Composable
 fun EventCard(event: ScheduleEvent) {
+    var isExpanded by remember { mutableStateOf(false) }
+    val hasSubGroups = !event.subGroups.isNullOrEmpty()
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -75,17 +77,18 @@ fun EventCard(event: ScheduleEvent) {
                 if (event.topic.isNotBlank()) {
                     Text(
                         text = event.topic,
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = Color.Gray,
                         modifier = Modifier.padding(top = 4.dp)
                     )
                 }
 
-                if (event.room.isNotBlank()) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(top = 6.dp)
-                    ) {
+                Row(
+                    modifier = Modifier.padding(top = 6.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (event.room.isNotBlank()) {
                         Box(
                             modifier = Modifier
                                 .background(
@@ -111,6 +114,146 @@ fun EventCard(event: ScheduleEvent) {
                                     color = Color(0xFF808085),
                                     fontWeight = FontWeight.Medium
                                 )
+                            }
+                        }
+                    }
+
+                    // КНОПКА С ПОДГРУППАМИ
+                    if (hasSubGroups) {
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    color = Color(0xFFEBDFF4),
+                                    shape = RoundedCornerShape(6.dp)
+                                )
+                                .clickable { isExpanded = !isExpanded }
+                                .padding(horizontal = 8.dp, vertical = 4.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                Icon(
+                                    Icons.Default.Group,
+                                    contentDescription = null,
+                                    tint = Color(0xFFBB3DD8),
+                                    modifier = Modifier.size(18.dp)
+                                )
+
+                                Text(
+                                    text = "${event.subGroups.size} подгруппы",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Color(0xFFBB3DD8),
+                                    fontWeight = FontWeight.Medium
+                                )
+
+                                Icon(
+                                    if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                    contentDescription = null,
+                                    tint = Color(0xFFBB3DD8),
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (isExpanded && hasSubGroups) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Color(0xFFDCDCE0))
+            )
+        }
+
+        AnimatedVisibility(
+            visible = isExpanded && hasSubGroups,
+            enter = expandVertically() + fadeIn(),
+            exit = shrinkVertically() + fadeOut()
+        ) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFFF2F2F6)
+                ),
+                shape = RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+
+                    event.subGroups?.forEach { subGroup ->
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(8.dp),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(12.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    // НАЗВАНИЕ ПРОФИЛЯ
+                                    Text(
+                                        text = subGroup.groupId,
+                                        style = MaterialTheme.typography.titleSmall,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.Black
+                                    )
+
+                                    // НАЗВАНИЕ ПРЕДМЕТА
+                                    Text(
+                                        text = subGroup.title,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = Color.Gray,
+                                        modifier = Modifier.padding(top = 2.dp)
+                                    )
+
+                                }
+
+                                Spacer(modifier = Modifier.width(12.dp))
+
+                                Box(
+                                    modifier = Modifier
+                                        .background(
+                                            color = Color(0xFFEFEFF1),
+                                            shape = RoundedCornerShape(6.dp)
+                                        )
+                                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                    ) {
+                                        Icon(
+                                            Icons.Default.NearMe,
+                                            contentDescription = null,
+                                            tint = Color(0xFF808085),
+                                            modifier = Modifier.size(12.dp)
+                                        )
+
+                                        Text(
+                                            text = subGroup.categoryId,
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = Color(0xFF808085),
+                                            fontWeight = FontWeight.Medium
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
