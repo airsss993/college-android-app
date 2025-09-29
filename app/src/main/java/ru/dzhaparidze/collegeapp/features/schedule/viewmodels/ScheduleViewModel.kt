@@ -38,27 +38,27 @@ class ScheduleViewModel(private val repository: ScheduleRepositoryInterface) : V
 
     private fun getDatePlusDays(i: Int): String {
         val currentDate = Date()
-        val calendar = java.util.Calendar.getInstance()
+        val calendar = Calendar.getInstance()
         calendar.time = currentDate
-        calendar.add(java.util.Calendar.DAY_OF_MONTH, i)
+        calendar.add(Calendar.DAY_OF_MONTH, i)
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return formatter.format(calendar.time)
     }
 
     private fun getWeekStart(weeksOffset: Int = 0): String {
-        val calendar = java.util.Calendar.getInstance()
-        calendar.firstDayOfWeek = java.util.Calendar.MONDAY
-        calendar.set(java.util.Calendar.DAY_OF_WEEK, java.util.Calendar.MONDAY)
-        calendar.add(java.util.Calendar.WEEK_OF_YEAR, weeksOffset)
+        val calendar = Calendar.getInstance()
+        calendar.firstDayOfWeek = Calendar.MONDAY
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+        calendar.add(Calendar.WEEK_OF_YEAR, weeksOffset)
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return formatter.format(calendar.time)
     }
 
     private fun getWeekEnd(weeksOffset: Int = 0): String {
-        val calendar = java.util.Calendar.getInstance()
-        calendar.firstDayOfWeek = java.util.Calendar.MONDAY
-        calendar.set(java.util.Calendar.DAY_OF_WEEK, java.util.Calendar.SUNDAY)
-        calendar.add(java.util.Calendar.WEEK_OF_YEAR, weeksOffset)
+        val calendar = Calendar.getInstance()
+        calendar.firstDayOfWeek = Calendar.MONDAY
+        calendar.add(Calendar.WEEK_OF_YEAR, weeksOffset)
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return formatter.format(calendar.time)
     }
@@ -120,44 +120,17 @@ class ScheduleViewModel(private val repository: ScheduleRepositoryInterface) : V
                     selectedStartDate = today
                     selectedEndDate = today
                 }
+
                 TimePeriod.THREE_DAYS -> {
                     val today = getCurrentDate()
                     selectedStartDate = today
                     selectedEndDate = getDatePlusDays(2)
                 }
+
                 TimePeriod.WEEK -> {
-                    viewModelScope.launch {
-                        val currentWeekStart = getWeekStart(0)
-                        val currentWeekEnd = getWeekEnd(0)
-                        val nextWeekStart = getWeekStart(1)
-                        val nextWeekEnd = getWeekEnd(1)
-
-                        val calendar = java.util.Calendar.getInstance()
-                        val today = calendar.get(java.util.Calendar.DAY_OF_WEEK)
-
-                        val useNextWeek = when {
-                            today == java.util.Calendar.MONDAY -> true
-
-                            today == java.util.Calendar.SATURDAY || today == java.util.Calendar.SUNDAY -> {
-                                hasEventsInPeriod(nextWeekStart, nextWeekEnd)
-                            }
-
-                            else -> !hasEventsInPeriod(currentWeekStart, currentWeekEnd)
-                        }
-
-                        if (useNextWeek) {
-                            selectedWeekOffset = 1
-                            selectedStartDate = nextWeekStart
-                            selectedEndDate = nextWeekEnd
-                        } else {
-                            selectedWeekOffset = 0
-                            selectedStartDate = currentWeekStart
-                            selectedEndDate = currentWeekEnd
-                        }
-
-                        loadSchedule()
-                    }
-                    return
+                    selectedWeekOffset = 0
+                    selectedStartDate = getWeekStart(0)
+                    selectedEndDate = getWeekEnd(0)
                 }
             }
         }

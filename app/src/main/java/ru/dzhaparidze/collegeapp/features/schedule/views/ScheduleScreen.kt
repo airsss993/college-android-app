@@ -16,11 +16,11 @@ import androidx.compose.ui.unit.*
 import androidx.core.content.edit
 import ru.dzhaparidze.collegeapp.features.schedule.data.ScheduleAPI
 import ru.dzhaparidze.collegeapp.features.schedule.data.ScheduleRepository
+import ru.dzhaparidze.collegeapp.features.schedule.utils.DateFormatters
 import ru.dzhaparidze.collegeapp.features.schedule.utils.GroupSubgroupCompatibility
 import ru.dzhaparidze.collegeapp.features.schedule.utils.GroupsCatalog
-import ru.dzhaparidze.collegeapp.features.schedule.viewmodels.ScheduleViewModel
-import ru.dzhaparidze.collegeapp.features.schedule.utils.DateFormatters
 import ru.dzhaparidze.collegeapp.features.schedule.utils.getFullSubgroupName
+import ru.dzhaparidze.collegeapp.features.schedule.viewmodels.ScheduleViewModel
 import java.util.*
 
 enum class TimePeriod(val displayName: String) {
@@ -82,6 +82,8 @@ fun ScheduleScreen() {
     var selectedSubgroup by remember { mutableStateOf("") }
     var selectedTimePeriod by remember { mutableStateOf(TimePeriod.TODAY) }
     var showDatePicker by remember { mutableStateOf(false) }
+    var customStartDate by remember { mutableStateOf<String?>(null) }
+    var customEndDate by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit) {
         selectedGroup = prefs.getString("selected_group", "ИТ25-11") ?: "ИТ25-11"
@@ -196,14 +198,16 @@ fun ScheduleScreen() {
                 Button(
                     onClick = {
                         selectedTimePeriod = TimePeriod.TODAY
+                        customStartDate = null
+                        customEndDate = null
                         viewModel.updateSchedule(timePeriod = TimePeriod.TODAY)
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (selectedTimePeriod == TimePeriod.TODAY)
+                        containerColor = if (selectedTimePeriod == TimePeriod.TODAY && customStartDate == null)
                             androidx.compose.ui.graphics.Color(0xFF3B86F6)
                         else
                             androidx.compose.ui.graphics.Color.Transparent,
-                        contentColor = if (selectedTimePeriod == TimePeriod.TODAY)
+                        contentColor = if (selectedTimePeriod == TimePeriod.TODAY && customStartDate == null)
                             androidx.compose.ui.graphics.Color.White
                         else
                             androidx.compose.ui.graphics.Color.Gray
@@ -222,14 +226,16 @@ fun ScheduleScreen() {
                 Button(
                     onClick = {
                         selectedTimePeriod = TimePeriod.THREE_DAYS
+                        customStartDate = null
+                        customEndDate = null
                         viewModel.updateSchedule(timePeriod = TimePeriod.THREE_DAYS)
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (selectedTimePeriod == TimePeriod.THREE_DAYS)
+                        containerColor = if (selectedTimePeriod == TimePeriod.THREE_DAYS && customStartDate == null)
                             androidx.compose.ui.graphics.Color(0xFF3B86F6)
                         else
                             androidx.compose.ui.graphics.Color.Transparent,
-                        contentColor = if (selectedTimePeriod == TimePeriod.THREE_DAYS)
+                        contentColor = if (selectedTimePeriod == TimePeriod.THREE_DAYS && customStartDate == null)
                             androidx.compose.ui.graphics.Color.White
                         else
                             androidx.compose.ui.graphics.Color.Gray
@@ -248,14 +254,16 @@ fun ScheduleScreen() {
                 Button(
                     onClick = {
                         selectedTimePeriod = TimePeriod.WEEK
+                        customStartDate = null
+                        customEndDate = null
                         viewModel.updateSchedule(timePeriod = TimePeriod.WEEK)
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (selectedTimePeriod == TimePeriod.WEEK)
+                        containerColor = if (selectedTimePeriod == TimePeriod.WEEK && customStartDate == null)
                             androidx.compose.ui.graphics.Color(0xFF3B86F6)
                         else
                             androidx.compose.ui.graphics.Color.Transparent,
-                        contentColor = if (selectedTimePeriod == TimePeriod.WEEK)
+                        contentColor = if (selectedTimePeriod == TimePeriod.WEEK && customStartDate == null)
                             androidx.compose.ui.graphics.Color.White
                         else
                             androidx.compose.ui.graphics.Color.Gray
@@ -274,8 +282,14 @@ fun ScheduleScreen() {
                 Button(
                     onClick = { showDatePicker = true },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = androidx.compose.ui.graphics.Color(0xFFDCE6F7),
-                        contentColor = androidx.compose.ui.graphics.Color(0xFF3B86F6)
+                        containerColor = if (customStartDate != null && customEndDate != null)
+                            androidx.compose.ui.graphics.Color(0xFF3B86F6)
+                        else
+                            androidx.compose.ui.graphics.Color(0xFFDCE6F7),
+                        contentColor = if (customStartDate != null && customEndDate != null)
+                            androidx.compose.ui.graphics.Color.White
+                        else
+                            androidx.compose.ui.graphics.Color(0xFF3B86F6)
                     ),
                     elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),
                     contentPadding = PaddingValues(horizontal = 20.dp)
@@ -314,7 +328,11 @@ fun ScheduleScreen() {
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(
-                text = getDateRangeText(selectedTimePeriod, viewModel.selectedWeekOffset),
+                text = if (customStartDate != null && customEndDate != null) {
+                    "${DateFormatters.uiDate.format(java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(customStartDate!!)!!)} - ${DateFormatters.uiDate.format(java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(customEndDate!!)!!)}"
+                } else {
+                    getDateRangeText(selectedTimePeriod, viewModel.selectedWeekOffset)
+                },
                 fontSize = 14.sp,
                 color = androidx.compose.ui.graphics.Color.Gray,
                 fontWeight = FontWeight.Medium
@@ -631,7 +649,222 @@ fun ScheduleScreen() {
                 }
             }
         }
+
+        if (showDatePicker) {
+            ModalBottomSheet(
+                onDismissRequest = { showDatePicker = false },
+                sheetState = rememberModalBottomSheetState(),
+                containerColor = androidx.compose.ui.graphics.Color(0xFFF2F2F6),
+                dragHandle = null
+            ) {
+                DatePickerContent(
+                    onDatesSelected = { startDate, endDate ->
+                        customStartDate = startDate
+                        customEndDate = endDate
+                        viewModel.updateSchedule(
+                            startDate = startDate,
+                            endDate = endDate
+                        )
+                        showDatePicker = false
+                    },
+                    onDismiss = { showDatePicker = false }
+                )
+            }
+        }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DatePickerContent(
+    onDatesSelected: (String, String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var startDate by remember { mutableStateOf<Long?>(null) }
+    var endDate by remember { mutableStateOf<Long?>(null) }
+    var selectingStartDate by remember { mutableStateOf(true) }
+
+    val datePickerState = rememberDatePickerState()
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(
+                onClick = onDismiss,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = androidx.compose.ui.graphics.Color(0xFFFBFBFF),
+                    contentColor = androidx.compose.ui.graphics.Color.Black
+                ),
+                elevation = ButtonDefaults.buttonElevation(2.dp, 2.dp, 0.dp, 2.dp, 2.dp),
+                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+            ) {
+                Text("Отмена", fontSize = 16.sp)
+            }
+
+            Text(
+                text = "Выбор периода",
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
+
+            Button(
+                onClick = {
+                    if (startDate != null && endDate != null) {
+                        val start = java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
+                            Date(startDate!!)
+                        )
+                        val end = java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
+                            Date(endDate!!)
+                        )
+                        onDatesSelected(start, end)
+                    }
+                },
+                enabled = startDate != null && endDate != null,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = androidx.compose.ui.graphics.Color(0xFF3B86F6),
+                    contentColor = androidx.compose.ui.graphics.Color.White
+                ),
+                elevation = ButtonDefaults.buttonElevation(2.dp, 2.dp, 0.dp, 2.dp, 2.dp),
+                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+            ) {
+                Text("Применить", fontSize = 16.sp)
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Card(
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable { selectingStartDate = true },
+                colors = CardDefaults.cardColors(
+                    containerColor = if (selectingStartDate)
+                        androidx.compose.ui.graphics.Color(0xFF3B86F6)
+                    else
+                        androidx.compose.ui.graphics.Color.White
+                ),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(12.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Начало",
+                        fontSize = 12.sp,
+                        color = if (selectingStartDate)
+                            androidx.compose.ui.graphics.Color.White
+                        else
+                            androidx.compose.ui.graphics.Color.Gray
+                    )
+                    Text(
+                        text = if (startDate != null)
+                            DateFormatters.uiDate.format(Date(startDate!!))
+                        else
+                            "Не выбрано",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = if (selectingStartDate)
+                            androidx.compose.ui.graphics.Color.White
+                        else
+                            androidx.compose.ui.graphics.Color.Black
+                    )
+                }
+            }
+
+            Card(
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable { selectingStartDate = false },
+                colors = CardDefaults.cardColors(
+                    containerColor = if (!selectingStartDate)
+                        androidx.compose.ui.graphics.Color(0xFF3B86F6)
+                    else
+                        androidx.compose.ui.graphics.Color.White
+                ),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(12.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Конец",
+                        fontSize = 12.sp,
+                        color = if (!selectingStartDate)
+                            androidx.compose.ui.graphics.Color.White
+                        else
+                            androidx.compose.ui.graphics.Color.Gray
+                    )
+                    Text(
+                        text = if (endDate != null)
+                            DateFormatters.uiDate.format(Date(endDate!!))
+                        else
+                            "Не выбрано",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = if (!selectingStartDate)
+                            androidx.compose.ui.graphics.Color.White
+                        else
+                            androidx.compose.ui.graphics.Color.Black
+                    )
+                }
+            }
+        }
+
+        CompactDatePicker(
+            state = datePickerState,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        LaunchedEffect(datePickerState.selectedDateMillis) {
+            datePickerState.selectedDateMillis?.let { selectedMillis ->
+                if (selectingStartDate) {
+                    startDate = selectedMillis
+                    selectingStartDate = false
+                } else {
+                    endDate = selectedMillis
+                    if (startDate != null && selectedMillis < startDate!!) {
+                        endDate = startDate
+                        startDate = selectedMillis
+                    }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CompactDatePicker(
+    state: DatePickerState,
+    modifier: Modifier = Modifier
+) {
+    DatePicker(
+        state = state,
+        modifier = modifier
+            .height(400.dp)
+            .padding(horizontal = 8.dp),
+        title = null,
+        headline = null,
+        showModeToggle = false,
+        colors = DatePickerDefaults.colors(
+            containerColor = androidx.compose.ui.graphics.Color(0xFFF2F2F6)
+        )
+    )
 }
 
 

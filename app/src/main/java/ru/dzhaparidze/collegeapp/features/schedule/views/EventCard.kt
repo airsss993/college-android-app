@@ -30,13 +30,16 @@ fun EventCard(event: ScheduleEvent) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .height(IntrinsicSize.Min)
+                .padding(16.dp)
         ) {
             // ВРЕМЯ ПАРЫ
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.width(80.dp)
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .width(80.dp)
+                    .fillMaxHeight()
             ) {
                 val timeStart = event.start
                 val timeEnd = event.end
@@ -45,13 +48,15 @@ fun EventCard(event: ScheduleEvent) {
                     text = timeStart,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black
+                    color = Color.Black,
+                    fontSize = (MaterialTheme.typography.bodyLarge.fontSize.value + 1).sp
                 )
                 Text(
                     text = timeEnd,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Normal,
-                    color = Color.DarkGray
+                    color = Color.DarkGray,
+                    fontSize = (MaterialTheme.typography.bodyMedium.fontSize.value + 1).sp
                 )
             }
 
@@ -59,8 +64,11 @@ fun EventCard(event: ScheduleEvent) {
             Box(
                 modifier = Modifier
                     .width(4.dp)
-                    .height(52.dp)
-                    .background(Color(0xFFBB3ED8))
+                    .fillMaxHeight()
+                    .background(
+                        color = Color(0xFFBB3ED8),
+                        shape = RoundedCornerShape(2.dp)
+                    )
             )
 
             Spacer(modifier = Modifier.width(16.dp))
