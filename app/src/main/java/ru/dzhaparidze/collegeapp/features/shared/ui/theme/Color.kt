@@ -1,0 +1,1 @@
+package ru.dzhaparidze.collegeapp.features.shared.ui.theme
