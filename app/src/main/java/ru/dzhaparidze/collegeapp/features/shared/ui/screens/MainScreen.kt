@@ -16,19 +16,16 @@ import ru.dzhaparidze.collegeapp.features.settings.views.ThemeSelectionScreen
 enum class Screen { SETTINGS, SCHEDULE, THEME_SELECTION, ABOUT_APP }
 
 @Composable
-fun MainScreen() {
-    val context = LocalContext.current
-    val themeViewModel = remember { ThemeViewModel(context) }
+fun MainScreen(themeViewModel: ThemeViewModel) {
     val currentScreen = remember { mutableStateOf(Screen.SCHEDULE) }
-    val whiteThemeColor = 0xFFF2F2F6
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = androidx.compose.ui.graphics.Color(whiteThemeColor),
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             if (currentScreen.value != Screen.THEME_SELECTION && currentScreen.value != Screen.ABOUT_APP) {
                 NavigationBar(
-                    containerColor = androidx.compose.ui.graphics.Color(whiteThemeColor)
+                    containerColor = MaterialTheme.colorScheme.background
                 ) {
                     // РАСПИСАНИЕ
                     NavigationBarItem(

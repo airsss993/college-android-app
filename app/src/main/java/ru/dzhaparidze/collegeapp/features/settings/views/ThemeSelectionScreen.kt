@@ -25,7 +25,7 @@ fun ThemeSelectionScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF2F2F6))
+            .background(MaterialTheme.colorScheme.background)
     ) {
         Box(
             modifier = Modifier
@@ -36,7 +36,7 @@ fun ThemeSelectionScreen(
                 modifier = Modifier
                     .size(40.dp)
                     .clip(RoundedCornerShape(50))
-                    .background(Color.White)
+                    .background(MaterialTheme.colorScheme.surface)
                     .clickable(onClick = onBackClick)
                     .align(Alignment.CenterStart),
                 contentAlignment = Alignment.Center
@@ -52,6 +52,7 @@ fun ThemeSelectionScreen(
                 text = "Выбор темы оформления",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.align(Alignment.Center)
             )
         }
@@ -61,7 +62,7 @@ fun ThemeSelectionScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.surface)
         ) {
             ThemeOption(
                 themeName = ThemeMode.SYSTEM.toDisplayString(),
@@ -106,14 +107,15 @@ private fun ThemeOption(
             Text(
                 text = themeName,
                 style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             RadioButton(
                 selected = isSelected,
                 onClick = onClick,
                 colors = RadioButtonDefaults.colors(
-                    selectedColor = Color(0xFFBB3DD8)
+                    selectedColor = MaterialTheme.colorScheme.primary
                 )
             )
         }
@@ -121,7 +123,7 @@ private fun ThemeOption(
         if (showDivider) {
             HorizontalDivider(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                color = Color(0xFFE3E2E9)
+                color = MaterialTheme.colorScheme.secondary
             )
         }
     }

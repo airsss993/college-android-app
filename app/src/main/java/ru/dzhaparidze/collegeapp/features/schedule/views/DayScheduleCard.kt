@@ -17,7 +17,7 @@ fun DayScheduleCard(day: String, events: List<ScheduleEvent>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFFFFFFF)
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -34,19 +34,20 @@ fun DayScheduleCard(day: String, events: List<ScheduleEvent>) {
                         if (date != null) DateFormatters.uiDate.format(date) else day
                     } catch (e: ParseException) { day },
                     style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Card(
                     colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFFF2F2F6)
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant
                     ),
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Text(
                         text = "${events.size} ${getEventCountText(events.size)}",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                     )
                 }

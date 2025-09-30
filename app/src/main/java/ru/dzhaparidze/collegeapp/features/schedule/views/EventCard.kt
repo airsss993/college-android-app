@@ -23,7 +23,7 @@ fun EventCard(event: ScheduleEvent) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFF2F2F6)
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -48,14 +48,14 @@ fun EventCard(event: ScheduleEvent) {
                     text = timeStart,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontSize = (MaterialTheme.typography.bodyLarge.fontSize.value + 1).sp
                 )
                 Text(
                     text = timeEnd,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Normal,
-                    color = Color.DarkGray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = (MaterialTheme.typography.bodyMedium.fontSize.value + 1).sp
                 )
             }
@@ -66,7 +66,7 @@ fun EventCard(event: ScheduleEvent) {
                     .width(4.dp)
                     .fillMaxHeight()
                     .background(
-                        color = Color(0xFFBB3ED8),
+                        color = MaterialTheme.colorScheme.primary,
                         shape = RoundedCornerShape(2.dp)
                     )
             )
@@ -80,14 +80,15 @@ fun EventCard(event: ScheduleEvent) {
                 Text(
                     text = event.title,
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 if (event.topic.isNotBlank()) {
                     Text(
                         text = event.topic,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(top = 4.dp)
                     )
                 }
@@ -101,7 +102,7 @@ fun EventCard(event: ScheduleEvent) {
                         Box(
                             modifier = Modifier
                                 .background(
-                                    color = Color(0xFFE3E2E9),
+                                    color = MaterialTheme.colorScheme.secondary,
                                     shape = RoundedCornerShape(6.dp)
                                 )
                                 .padding(horizontal = 8.dp, vertical = 4.dp),
@@ -114,13 +115,13 @@ fun EventCard(event: ScheduleEvent) {
                                 Icon(
                                     Icons.Default.NearMe,
                                     contentDescription = null,
-                                    tint = Color(0xFF808085),
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.size(14.dp)
                                 )
                                 Text(
                                     text = event.room,
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = Color(0xFF808085),
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontWeight = FontWeight.Medium
                                 )
                             }
@@ -132,7 +133,7 @@ fun EventCard(event: ScheduleEvent) {
                         Box(
                             modifier = Modifier
                                 .background(
-                                    color = Color(0xFFEBDFF4),
+                                    color = MaterialTheme.colorScheme.primaryContainer,
                                     shape = RoundedCornerShape(6.dp)
                                 )
                                 .clickable { isExpanded = !isExpanded }
@@ -146,21 +147,21 @@ fun EventCard(event: ScheduleEvent) {
                                 Icon(
                                     Icons.Default.Group,
                                     contentDescription = null,
-                                    tint = Color(0xFFBB3DD8),
+                                    tint = MaterialTheme.colorScheme.primary,
                                     modifier = Modifier.size(18.dp)
                                 )
 
                                 Text(
                                     text = "${event.subGroups.size} подгруппы",
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = Color(0xFFBB3DD8),
+                                    color = MaterialTheme.colorScheme.primary,
                                     fontWeight = FontWeight.Medium
                                 )
 
                                 Icon(
                                     if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
                                     contentDescription = null,
-                                    tint = Color(0xFFBB3DD8),
+                                    tint = MaterialTheme.colorScheme.primary,
                                     modifier = Modifier.size(16.dp)
                                 )
                             }
@@ -175,7 +176,7 @@ fun EventCard(event: ScheduleEvent) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(1.dp)
-                    .background(Color(0xFFDCDCE0))
+                    .background(MaterialTheme.colorScheme.secondary)
             )
         }
 
@@ -187,7 +188,7 @@ fun EventCard(event: ScheduleEvent) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFFF2F2F6)
+                    containerColor = MaterialTheme.colorScheme.surface
                 ),
                 shape = RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp)
             ) {
@@ -200,7 +201,7 @@ fun EventCard(event: ScheduleEvent) {
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(
-                                containerColor = Color.White
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant
                             ),
                             shape = RoundedCornerShape(8.dp),
                             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -220,14 +221,14 @@ fun EventCard(event: ScheduleEvent) {
                                         text = getFullSubgroupName(subGroup.groupId),
                                         style = MaterialTheme.typography.titleSmall,
                                         fontWeight = FontWeight.Bold,
-                                        color = Color.Black
+                                        color = MaterialTheme.colorScheme.onSurface
                                     )
 
                                     // НАЗВАНИЕ ПРЕДМЕТА
                                     Text(
                                         text = subGroup.title,
                                         style = MaterialTheme.typography.bodySmall,
-                                        color = Color.Gray,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(top = 2.dp)
                                     )
 
@@ -238,7 +239,7 @@ fun EventCard(event: ScheduleEvent) {
                                 Box(
                                     modifier = Modifier
                                         .background(
-                                            color = Color(0xFFEFEFF1),
+                                            color = MaterialTheme.colorScheme.secondary,
                                             shape = RoundedCornerShape(6.dp)
                                         )
                                         .padding(horizontal = 8.dp, vertical = 4.dp),
@@ -251,14 +252,14 @@ fun EventCard(event: ScheduleEvent) {
                                         Icon(
                                             Icons.Default.NearMe,
                                             contentDescription = null,
-                                            tint = Color(0xFF808085),
+                                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                             modifier = Modifier.size(12.dp)
                                         )
 
                                         Text(
                                             text = subGroup.categoryId,
                                             style = MaterialTheme.typography.bodySmall,
-                                            color = Color(0xFF808085),
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                                             fontWeight = FontWeight.Medium
                                         )
                                     }

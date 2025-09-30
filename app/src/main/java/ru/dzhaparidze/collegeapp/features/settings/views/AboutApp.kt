@@ -35,7 +35,7 @@ fun AboutAppScreen(onBackClick: () -> Unit) {
                 modifier = Modifier
                     .size(40.dp)
                     .clip(RoundedCornerShape(50))
-                    .background(Color.White)
+                    .background(MaterialTheme.colorScheme.surface)
                     .clickable(onClick = onBackClick)
                     .align(Alignment.CenterStart),
                 contentAlignment = Alignment.Center
@@ -51,6 +51,7 @@ fun AboutAppScreen(onBackClick: () -> Unit) {
                 text = "О приложении",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.align(Alignment.Center)
             )
         }
@@ -60,34 +61,35 @@ fun AboutAppScreen(onBackClick: () -> Unit) {
                 .fillMaxWidth()
                 .padding(16.dp, 32.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.surface)
                 .padding(16.dp)
         ) {
             Text(
                 text = "МойКЦТ для Android",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
             Text(
                 text = "Версия 0.1",
                 style = MaterialTheme.typography.titleMedium,
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
             Text(
                 text = "© 2021-2025 АНПОО \"Колледж Цифровых Технологий\"",
                 style = MaterialTheme.typography.titleSmall,
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 4.dp)
             )
 
             Text(
                 text = "Учебное приложение для студентов колледжа цифровых технологий",
                 style = MaterialTheme.typography.titleSmall,
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
 
@@ -95,7 +97,7 @@ fun AboutAppScreen(onBackClick: () -> Unit) {
             text = "Действия",
             fontSize = 18.sp,
             fontWeight = FontWeight.Medium,
-            color = Color(0xFF86868A),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(start = 32.dp, end = 16.dp, bottom = 4.dp, top = 16.dp)
         )
 
@@ -104,7 +106,7 @@ fun AboutAppScreen(onBackClick: () -> Unit) {
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.surface)
         ) {
             LinkButton(
                 icon = Icons.Default.BugReport,
@@ -132,7 +134,7 @@ fun AboutAppScreen(onBackClick: () -> Unit) {
             text = "Разработчики",
             fontSize = 18.sp,
             fontWeight = FontWeight.Medium,
-            color = Color(0xFF86868A),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(start = 32.dp, end = 16.dp, bottom = 4.dp, top = 16.dp)
         )
 
@@ -141,7 +143,7 @@ fun AboutAppScreen(onBackClick: () -> Unit) {
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.surface)
         ) {
             DeveloperButton(
                 name = "Иван Коломацкий",
@@ -164,7 +166,7 @@ fun AboutAppScreen(onBackClick: () -> Unit) {
             text = "Маркетинг",
             fontSize = 18.sp,
             fontWeight = FontWeight.Medium,
-            color = Color(0xFF86868A),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(start = 32.dp, end = 16.dp, bottom = 4.dp, top = 16.dp)
         )
 
@@ -173,7 +175,7 @@ fun AboutAppScreen(onBackClick: () -> Unit) {
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.surface)
         ) {
             DeveloperButton(
                 name = "Илья Некрасов",
@@ -210,13 +212,13 @@ private fun DeveloperButton(
                     text = name,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Text(
                     text = role,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(top = 2.dp)
                 )
             }
@@ -231,7 +233,7 @@ private fun DeveloperButton(
                         .size(50.dp, 40.dp)
                         .shadow(2.dp, CircleShape)
                         .clip(CircleShape)
-                        .background(Color(0xFFFDFDFD))
+                        .background(MaterialTheme.colorScheme.surface)
                         .clickable(
                             indication = ripple(),
                             interactionSource = remember { MutableInteractionSource() }
@@ -242,13 +244,13 @@ private fun DeveloperButton(
                         modifier = Modifier
                             .size(28.dp)
                             .clip(CircleShape)
-                            .background(Color(0xFFEEEEEE)),
+                            .background(MaterialTheme.colorScheme.surfaceVariant),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.github_icon),
                             contentDescription = null,
-                            tint = Color.Black,
+                            tint = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.size(18.dp)
                         )
                     }
@@ -259,7 +261,7 @@ private fun DeveloperButton(
                         .size(50.dp, 40.dp)
                         .shadow(2.dp, CircleShape)
                         .clip(CircleShape)
-                        .background(Color(0xFFFDFDFD))
+                        .background(MaterialTheme.colorScheme.surface)
                         .clickable(
                             indication = ripple(),
                             interactionSource = remember { MutableInteractionSource() }
@@ -270,13 +272,13 @@ private fun DeveloperButton(
                         modifier = Modifier
                             .size(28.dp)
                             .clip(CircleShape)
-                            .background(Color(0xFFEEEEEE)),
+                            .background(MaterialTheme.colorScheme.surfaceVariant),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.telegram_icon),
                             contentDescription = null,
-                            tint = Color.Black,
+                            tint = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier
                                 .size(18.dp)
                                 .scale(scaleX = 1f, scaleY = -1f)
@@ -289,7 +291,7 @@ private fun DeveloperButton(
         if (showDivider) {
             HorizontalDivider(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                color = Color(0xFFE3E2E9)
+                color = MaterialTheme.colorScheme.secondary
             )
         }
     }
@@ -325,6 +327,7 @@ private fun LinkButton(
                 text = text,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.weight(1f)
             )
 
@@ -338,7 +341,7 @@ private fun LinkButton(
         if (showDivider) {
             HorizontalDivider(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                color = Color(0xFFE3E2E9)
+                color = MaterialTheme.colorScheme.secondary
             )
         }
     }

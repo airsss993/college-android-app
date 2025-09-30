@@ -24,11 +24,16 @@ fun SettingsScreen(
     onThemeClick: () -> Unit,
     onInfoClick: () -> Unit
 ) {
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
         Text(
             text = "Настройки",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(start = 16.dp, top = 86.dp, end = 16.dp, bottom = 16.dp)
         )
 
@@ -36,7 +41,7 @@ fun SettingsScreen(
             text = "Общие настройки",
             fontSize = 18.sp,
             fontWeight = FontWeight.Medium,
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(start = 32.dp, end = 16.dp, bottom = 4.dp)
         )
 
@@ -45,7 +50,7 @@ fun SettingsScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.surface)
                 .clickable(onClick = onThemeClick)
                 .padding(horizontal = 16.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -57,6 +62,7 @@ fun SettingsScreen(
                 else
                     Icons.Default.LightMode,
                 contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(24.dp)
             )
 
@@ -66,6 +72,7 @@ fun SettingsScreen(
                 text = "Тема",
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.weight(1f)
             )
 
@@ -88,7 +95,7 @@ fun SettingsScreen(
             text = "Информация",
             fontSize = 18.sp,
             fontWeight = FontWeight.Medium,
-            color = Color(0xFF86868A),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 16.dp,start = 32.dp, end = 16.dp, bottom = 4.dp)
         )
 
@@ -97,7 +104,7 @@ fun SettingsScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.surface)
                 .clickable(onClick = onInfoClick)
                 .padding(horizontal = 16.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -106,6 +113,7 @@ fun SettingsScreen(
             Icon(
                 imageVector = Icons.Default.Info,
                 contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(24.dp)
             )
 
@@ -115,6 +123,7 @@ fun SettingsScreen(
                 text = "О приложении",
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.weight(1f)
             )
 

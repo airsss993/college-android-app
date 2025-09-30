@@ -97,12 +97,15 @@ fun ScheduleScreen() {
     }
 
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background),
     ) {
         Text(
             text = "Расписание",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.ExtraBold,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(top = 86.dp, bottom = 8.dp, start = 16.dp)
         )
 
@@ -116,7 +119,7 @@ fun ScheduleScreen() {
                     .weight(1f)
                     .clickable { showGroupSheet = true },
                 colors = CardDefaults.cardColors(
-                    containerColor = androidx.compose.ui.graphics.Color.White
+                    containerColor = MaterialTheme.colorScheme.surface
                 ),
                 shape = RoundedCornerShape(12.dp)
             ) {
@@ -126,7 +129,7 @@ fun ScheduleScreen() {
                     Text(
                         text = "Группа",
                         fontSize = 12.sp,
-                        color = androidx.compose.ui.graphics.Color.Gray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
                     Row(
@@ -135,14 +138,14 @@ fun ScheduleScreen() {
                         Text(
                             text = selectedGroup,
                             fontSize = 18.sp,
-                            color = androidx.compose.ui.graphics.Color.Black,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         Icon(
                             Icons.Default.KeyboardArrowDown,
                             contentDescription = null,
-                            tint = androidx.compose.ui.graphics.Color.Gray
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -153,7 +156,7 @@ fun ScheduleScreen() {
                     .weight(1f)
                     .clickable { showSubgroupSheet = true },
                 colors = CardDefaults.cardColors(
-                    containerColor = androidx.compose.ui.graphics.Color(0xFFFFFFFF)
+                    containerColor = MaterialTheme.colorScheme.surface
                 ),
                 shape = RoundedCornerShape(12.dp)
             ) {
@@ -163,7 +166,7 @@ fun ScheduleScreen() {
                     Text(
                         text = "Подгруппа",
                         fontSize = 12.sp,
-                        color = androidx.compose.ui.graphics.Color.Gray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
                     Row(
@@ -174,14 +177,14 @@ fun ScheduleScreen() {
                                 selectedSubgroup
                             ),
                             fontSize = 18.sp,
-                            color = androidx.compose.ui.graphics.Color.Black,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         Icon(
                             Icons.Default.KeyboardArrowDown,
                             contentDescription = null,
-                            tint = androidx.compose.ui.graphics.Color.Gray
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -204,13 +207,13 @@ fun ScheduleScreen() {
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (selectedTimePeriod == TimePeriod.TODAY && customStartDate == null)
-                            androidx.compose.ui.graphics.Color(0xFF3B86F6)
+                            MaterialTheme.colorScheme.primary
                         else
                             androidx.compose.ui.graphics.Color.Transparent,
                         contentColor = if (selectedTimePeriod == TimePeriod.TODAY && customStartDate == null)
-                            androidx.compose.ui.graphics.Color.White
+                            MaterialTheme.colorScheme.surface
                         else
-                            androidx.compose.ui.graphics.Color.Gray
+                            MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),
                     contentPadding = PaddingValues(horizontal = 20.dp)
@@ -232,13 +235,13 @@ fun ScheduleScreen() {
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (selectedTimePeriod == TimePeriod.THREE_DAYS && customStartDate == null)
-                            androidx.compose.ui.graphics.Color(0xFF3B86F6)
+                            MaterialTheme.colorScheme.primary
                         else
                             androidx.compose.ui.graphics.Color.Transparent,
                         contentColor = if (selectedTimePeriod == TimePeriod.THREE_DAYS && customStartDate == null)
-                            androidx.compose.ui.graphics.Color.White
+                            MaterialTheme.colorScheme.surface
                         else
-                            androidx.compose.ui.graphics.Color.Gray
+                            MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),
                     contentPadding = PaddingValues(horizontal = 20.dp)
@@ -260,13 +263,13 @@ fun ScheduleScreen() {
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (selectedTimePeriod == TimePeriod.WEEK && customStartDate == null)
-                            androidx.compose.ui.graphics.Color(0xFF3B86F6)
+                            MaterialTheme.colorScheme.primary
                         else
                             androidx.compose.ui.graphics.Color.Transparent,
                         contentColor = if (selectedTimePeriod == TimePeriod.WEEK && customStartDate == null)
-                            androidx.compose.ui.graphics.Color.White
+                            MaterialTheme.colorScheme.surface
                         else
-                            androidx.compose.ui.graphics.Color.Gray
+                            MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),
                     contentPadding = PaddingValues(horizontal = 20.dp)
@@ -283,13 +286,13 @@ fun ScheduleScreen() {
                     onClick = { showDatePicker = true },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (customStartDate != null && customEndDate != null)
-                            androidx.compose.ui.graphics.Color(0xFF3B86F6)
+                            MaterialTheme.colorScheme.primary
                         else
-                            androidx.compose.ui.graphics.Color(0xFFDCE6F7),
+                            MaterialTheme.colorScheme.primaryContainer,
                         contentColor = if (customStartDate != null && customEndDate != null)
-                            androidx.compose.ui.graphics.Color.White
+                            MaterialTheme.colorScheme.surface
                         else
-                            androidx.compose.ui.graphics.Color(0xFF3B86F6)
+                            MaterialTheme.colorScheme.primary
                     ),
                     elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),
                     contentPadding = PaddingValues(horizontal = 20.dp)
@@ -323,7 +326,7 @@ fun ScheduleScreen() {
             Icon(
                 Icons.Default.DateRange,
                 contentDescription = null,
-                tint = androidx.compose.ui.graphics.Color.Gray,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(16.dp)
             )
             Spacer(modifier = Modifier.width(6.dp))
@@ -334,7 +337,7 @@ fun ScheduleScreen() {
                     getDateRangeText(selectedTimePeriod, viewModel.selectedWeekOffset)
                 },
                 fontSize = 14.sp,
-                color = androidx.compose.ui.graphics.Color.Gray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.Medium
             )
         }
@@ -350,7 +353,7 @@ fun ScheduleScreen() {
                         verticalArrangement = Arrangement.Center
                     ) {
                         CircularProgressIndicator(
-                            color = androidx.compose.ui.graphics.Color.Gray
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
                         Spacer(modifier = Modifier.height(16.dp))
@@ -358,7 +361,7 @@ fun ScheduleScreen() {
                         Text(
                             text = "Загрузка расписания...",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = androidx.compose.ui.graphics.Color.Gray,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -391,7 +394,7 @@ fun ScheduleScreen() {
                                 Icons.Default.EventBusy,
                                 contentDescription = null,
                                 modifier = Modifier.size(80.dp),
-                                tint = androidx.compose.ui.graphics.Color.Gray
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
 
                             Spacer(modifier = Modifier.height(16.dp))
@@ -404,7 +407,7 @@ fun ScheduleScreen() {
                                 },
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = androidx.compose.ui.graphics.Color.Black,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 textAlign = TextAlign.Center
                             )
 
@@ -413,7 +416,7 @@ fun ScheduleScreen() {
                             Text(
                                 text = "На выбранные даты занятия не найдены",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = androidx.compose.ui.graphics.Color.Gray,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 textAlign = TextAlign.Center
                             )
 
@@ -426,8 +429,8 @@ fun ScheduleScreen() {
                                         viewModel.updateSchedule(timePeriod = TimePeriod.WEEK)
                                     },
                                     colors = ButtonDefaults.buttonColors(
-                                        containerColor = androidx.compose.ui.graphics.Color(0xFF3B86F6),
-                                        contentColor = androidx.compose.ui.graphics.Color.White
+                                        containerColor = MaterialTheme.colorScheme.primary,
+                                        contentColor = MaterialTheme.colorScheme.surface
                                     ),
                                     shape = RoundedCornerShape(20.dp),
                                     contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp)
@@ -469,7 +472,7 @@ fun ScheduleScreen() {
             ModalBottomSheet(
                 onDismissRequest = { showGroupSheet = false },
                 sheetState = rememberModalBottomSheetState(),
-                containerColor = androidx.compose.ui.graphics.Color(0xFFF2F2F6),
+                containerColor = MaterialTheme.colorScheme.background,
                 dragHandle = null
             ) {
                 Column(
@@ -490,8 +493,8 @@ fun ScheduleScreen() {
                             Button(
                                 onClick = { showGroupSheet = false },
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = androidx.compose.ui.graphics.Color(0xFFFBFBFF),
-                                    contentColor = androidx.compose.ui.graphics.Color.Black
+                                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                                    contentColor = MaterialTheme.colorScheme.onSurface
                                 ),
                                 elevation = ButtonDefaults.buttonElevation(
                                     2.dp,
@@ -548,7 +551,7 @@ fun ScheduleScreen() {
                                         )
                                         showGroupSheet = false
                                     }, colors = CardDefaults.cardColors(
-                                    containerColor = androidx.compose.ui.graphics.Color(0xFFFFFFFF)
+                                    containerColor = MaterialTheme.colorScheme.surface
                                 )
                             ) {
                                 Text(
@@ -567,7 +570,7 @@ fun ScheduleScreen() {
             ModalBottomSheet(
                 onDismissRequest = { showSubgroupSheet = false },
                 sheetState = rememberModalBottomSheetState(),
-                containerColor = androidx.compose.ui.graphics.Color(0xFFF2F2F6),
+                containerColor = MaterialTheme.colorScheme.background,
                 dragHandle = null
             ) {
                 Column(
@@ -588,8 +591,8 @@ fun ScheduleScreen() {
                             Button(
                                 onClick = { showSubgroupSheet = false },
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = androidx.compose.ui.graphics.Color(0xFFFBFBFF),
-                                    contentColor = androidx.compose.ui.graphics.Color.Black
+                                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                                    contentColor = MaterialTheme.colorScheme.onSurface
                                 ),
                                 elevation = ButtonDefaults.buttonElevation(
                                     2.dp,
@@ -633,7 +636,7 @@ fun ScheduleScreen() {
                                         viewModel.updateSchedule(subgroup = subgroup)
                                         showSubgroupSheet = false
                                     }, colors = CardDefaults.cardColors(
-                                    containerColor = androidx.compose.ui.graphics.Color(0xFFFFFFFF)
+                                    containerColor = MaterialTheme.colorScheme.surface
                                 )
                             ) {
                                 Text(
@@ -654,7 +657,7 @@ fun ScheduleScreen() {
             ModalBottomSheet(
                 onDismissRequest = { showDatePicker = false },
                 sheetState = rememberModalBottomSheetState(),
-                containerColor = androidx.compose.ui.graphics.Color(0xFFF2F2F6),
+                containerColor = MaterialTheme.colorScheme.background,
                 dragHandle = null
             ) {
                 DatePickerContent(
@@ -701,8 +704,8 @@ fun DatePickerContent(
             Button(
                 onClick = onDismiss,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = androidx.compose.ui.graphics.Color(0xFFFBFBFF),
-                    contentColor = androidx.compose.ui.graphics.Color.Black
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onSurface
                 ),
                 elevation = ButtonDefaults.buttonElevation(2.dp, 2.dp, 0.dp, 2.dp, 2.dp),
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
@@ -730,8 +733,8 @@ fun DatePickerContent(
                 },
                 enabled = startDate != null && endDate != null,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = androidx.compose.ui.graphics.Color(0xFF3B86F6),
-                    contentColor = androidx.compose.ui.graphics.Color.White
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.surface
                 ),
                 elevation = ButtonDefaults.buttonElevation(2.dp, 2.dp, 0.dp, 2.dp, 2.dp),
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
@@ -752,9 +755,9 @@ fun DatePickerContent(
                     .clickable { selectingStartDate = true },
                 colors = CardDefaults.cardColors(
                     containerColor = if (selectingStartDate)
-                        androidx.compose.ui.graphics.Color(0xFF3B86F6)
+                        MaterialTheme.colorScheme.primary
                     else
-                        androidx.compose.ui.graphics.Color.White
+                        MaterialTheme.colorScheme.surface
                 ),
                 shape = RoundedCornerShape(8.dp)
             ) {
@@ -766,9 +769,9 @@ fun DatePickerContent(
                         text = "Начало",
                         fontSize = 12.sp,
                         color = if (selectingStartDate)
-                            androidx.compose.ui.graphics.Color.White
+                            MaterialTheme.colorScheme.surface
                         else
-                            androidx.compose.ui.graphics.Color.Gray
+                            MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
                         text = if (startDate != null)
@@ -778,9 +781,9 @@ fun DatePickerContent(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
                         color = if (selectingStartDate)
-                            androidx.compose.ui.graphics.Color.White
+                            MaterialTheme.colorScheme.surface
                         else
-                            androidx.compose.ui.graphics.Color.Black
+                            MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
@@ -791,9 +794,9 @@ fun DatePickerContent(
                     .clickable { selectingStartDate = false },
                 colors = CardDefaults.cardColors(
                     containerColor = if (!selectingStartDate)
-                        androidx.compose.ui.graphics.Color(0xFF3B86F6)
+                        MaterialTheme.colorScheme.primary
                     else
-                        androidx.compose.ui.graphics.Color.White
+                        MaterialTheme.colorScheme.surface
                 ),
                 shape = RoundedCornerShape(8.dp)
             ) {
@@ -805,9 +808,9 @@ fun DatePickerContent(
                         text = "Конец",
                         fontSize = 12.sp,
                         color = if (!selectingStartDate)
-                            androidx.compose.ui.graphics.Color.White
+                            MaterialTheme.colorScheme.surface
                         else
-                            androidx.compose.ui.graphics.Color.Gray
+                            MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
                         text = if (endDate != null)
@@ -817,9 +820,9 @@ fun DatePickerContent(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
                         color = if (!selectingStartDate)
-                            androidx.compose.ui.graphics.Color.White
+                            MaterialTheme.colorScheme.surface
                         else
-                            androidx.compose.ui.graphics.Color.Black
+                            MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
@@ -862,7 +865,7 @@ fun CompactDatePicker(
         headline = null,
         showModeToggle = false,
         colors = DatePickerDefaults.colors(
-            containerColor = androidx.compose.ui.graphics.Color(0xFFF2F2F6)
+            containerColor = MaterialTheme.colorScheme.background
         )
     )
 }
