@@ -29,13 +29,14 @@ fun SettingsScreen(
             text = "Настройки",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 16.dp, top = 86.dp, end = 16.dp, bottom = 8.dp)
+            modifier = Modifier.padding(start = 16.dp, top = 86.dp, end = 16.dp, bottom = 16.dp)
         )
 
         Text(
             text = "Общие настройки",
-            style = MaterialTheme.typography.titleMedium,
-            color = Color(0xFF86868A),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Medium,
+            color = Color.Gray,
             modifier = Modifier.padding(start = 32.dp, end = 16.dp, bottom = 4.dp)
         )
 
@@ -70,7 +71,7 @@ fun SettingsScreen(
 
             Text(
                 text = currentTheme.toDisplayString(),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
@@ -82,6 +83,14 @@ fun SettingsScreen(
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
+
+        Text(
+            text = "Информация",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Medium,
+            color = Color(0xFF86868A),
+            modifier = Modifier.padding(top = 16.dp,start = 32.dp, end = 16.dp, bottom = 4.dp)
+        )
 
         Row(
             modifier = Modifier

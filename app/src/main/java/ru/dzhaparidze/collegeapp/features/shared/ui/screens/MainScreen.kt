@@ -67,8 +67,12 @@ fun MainScreen() {
             when (currentScreen.value) {
                 Screen.SETTINGS -> SettingsScreen(
                     currentTheme = themeViewModel.currentTheme,
-                    onThemeClick = { currentScreen.value = Screen.THEME_SELECTION },
-                    onInfoClick = { currentScreen.value = Screen.ABOUT_APP }
+                    onThemeClick = {
+                        currentScreen.value = Screen.THEME_SELECTION
+                    },
+                    onInfoClick = {
+                        currentScreen.value = Screen.ABOUT_APP
+                    }
                 )
 
                 Screen.SCHEDULE -> ScheduleScreen()

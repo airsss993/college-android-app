@@ -13,8 +13,4 @@ object DateFormatters {
     val uiDate: SimpleDateFormat by lazy {
         SimpleDateFormat("d MMM, EEE", Locale.Builder().setLanguage("ru").setRegion("RU").build())
     }
-
-    val uiTime: SimpleDateFormat by lazy {
-        SimpleDateFormat("HH:mm", Locale.getDefault())
-    }
 }

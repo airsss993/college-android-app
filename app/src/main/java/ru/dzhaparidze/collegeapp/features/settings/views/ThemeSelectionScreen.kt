@@ -50,8 +50,8 @@ fun ThemeSelectionScreen(
 
             Text(
                 text = "Выбор темы оформления",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.ExtraBold,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Medium,
                 modifier = Modifier.align(Alignment.Center)
             )
         }
