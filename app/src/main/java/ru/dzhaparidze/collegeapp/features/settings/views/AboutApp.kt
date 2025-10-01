@@ -158,19 +158,19 @@ fun AboutAppScreen(onBackClick: () -> Unit) {
                 .background(MaterialTheme.colorScheme.surface)
         ) {
             DeveloperButton(
-                name = "Иван Коломацкий",
-                role = "iOS разработчик",
-                githubUrl = "https://github.com/anton1ks96",
-                telegramUrl = "https://t.me/IKolomatskii",
-                showDivider = true
-            )
-
-            DeveloperButton(
                 name = "Артём Джапаридзе",
                 role = "Android разработчик",
                 githubUrl = "https://github.com/airsss993",
                 telegramUrl = "https://t.me/airsss993",
                 showDivider = false
+            )
+
+            DeveloperButton(
+                name = "Иван Коломацкий",
+                role = "iOS разработчик",
+                githubUrl = "https://github.com/anton1ks96",
+                telegramUrl = "https://t.me/IKolomatskii",
+                showDivider = true
             )
         }
 

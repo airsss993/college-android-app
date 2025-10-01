@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
 fun MainPreview() {
     val context = LocalContext.current
@@ -49,7 +49,7 @@ fun MainPreview() {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
 fun AboutAppPreview() {
     AppTheme {
@@ -57,7 +57,7 @@ fun AboutAppPreview() {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
 fun ThemeSelectionPreview() {
     AppTheme {
