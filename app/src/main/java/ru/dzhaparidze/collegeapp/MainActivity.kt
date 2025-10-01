@@ -10,6 +10,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.*
 import ru.dzhaparidze.collegeapp.features.settings.data.ThemeMode
 import ru.dzhaparidze.collegeapp.features.settings.viewmodels.ThemeViewModel
+import ru.dzhaparidze.collegeapp.features.settings.views.AboutAppScreen
+import ru.dzhaparidze.collegeapp.features.settings.views.ThemeSelectionScreen
 import ru.dzhaparidze.collegeapp.features.shared.ui.screens.MainScreen
 import ru.dzhaparidze.collegeapp.features.shared.ui.theme.AppTheme
 
@@ -44,5 +46,25 @@ fun MainPreview() {
 
     AppTheme {
         MainScreen(themeViewModel = themeViewModel)
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun AboutAppPreview() {
+    AppTheme {
+        AboutAppScreen(onBackClick = {})
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun ThemeSelectionPreview() {
+    AppTheme {
+        ThemeSelectionScreen(
+            currentTheme = ThemeMode.SYSTEM,
+            onThemeSelected = {},
+            onBackClick = {}
+        )
     }
 }

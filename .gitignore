@@ -39,3 +39,7 @@ replay_pid*
 # OS files
 .DS_Store
 Thumbs.db
+
+keystore.properties
+*.jks
+*.keystore

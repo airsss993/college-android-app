@@ -15,11 +15,19 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.text.font.*
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import ru.dzhaparidze.collegeapp.R
 
 @Composable
 fun AboutAppScreen(onBackClick: () -> Unit) {
+    val context = LocalContext.current
+    val versionName = try {
+        context.packageManager.getPackageInfo(context.packageName, 0).versionName
+    } catch (e: Exception) {
+        "1.0.0"
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -49,10 +57,14 @@ fun AboutAppScreen(onBackClick: () -> Unit) {
 
             Text(
                 text = "О приложении",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
+                fontSize = 19.sp,
+                fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.align(Alignment.Center)
+                softWrap = true,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(horizontal = 50.dp)
             )
         }
 
@@ -73,7 +85,7 @@ fun AboutAppScreen(onBackClick: () -> Unit) {
             )
 
             Text(
-                text = "Версия 0.1",
+                text = "Версия $versionName",
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 8.dp)

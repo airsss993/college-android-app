@@ -1,18 +1,16 @@
 package ru.dzhaparidze.collegeapp.features.settings.views
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.foundation.shape.*
+import androidx.compose.material.icons.*
+import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.*
 import androidx.compose.ui.text.font.*
+import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import ru.dzhaparidze.collegeapp.features.settings.data.ThemeMode
 
@@ -50,10 +48,14 @@ fun ThemeSelectionScreen(
 
             Text(
                 text = "Выбор темы оформления",
-                style = MaterialTheme.typography.titleLarge,
+                fontSize = 19.sp,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.align(Alignment.Center)
+                softWrap = true,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(horizontal = 50.dp)
             )
         }
 

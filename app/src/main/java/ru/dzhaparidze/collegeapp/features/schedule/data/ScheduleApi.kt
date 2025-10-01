@@ -37,12 +37,12 @@ class ScheduleAPI : ScheduleAPIInterface {
             ),
         )
 
-        val url = "http://10.0.2.2:8500${endpoint.path}"
+        val url = "http://79.174.86.248:8500${endpoint.path}"
         Log.d("ScheduleAPI", "Request URL: $url")
         Log.d("ScheduleAPI", "Params: ${endpoint.queryParams}")
 
         return try {
-            val baseUrl = "http://10.0.2.2:8500"
+            val baseUrl = "http://79.174.86.248:8500"
             Log.d("ScheduleAPI", "Using base URL: $baseUrl")
 
             val response = send<ScheduleResponse>(endpoint, baseUrl)

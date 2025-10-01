@@ -285,14 +285,8 @@ fun ScheduleScreen() {
                 Button(
                     onClick = { showDatePicker = true },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (customStartDate != null && customEndDate != null)
-                            MaterialTheme.colorScheme.primary
-                        else
-                            MaterialTheme.colorScheme.onSecondaryContainer,
-                        contentColor = if (customStartDate != null && customEndDate != null)
-                            MaterialTheme.colorScheme.surface
-                        else
-                            MaterialTheme.colorScheme.onSecondary
+                        containerColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onSecondary
                     ),
                     elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),
                     contentPadding = PaddingValues(horizontal = 20.dp)
@@ -332,7 +326,21 @@ fun ScheduleScreen() {
             Spacer(modifier = Modifier.width(6.dp))
             Text(
                 text = if (customStartDate != null && customEndDate != null) {
-                    "${DateFormatters.uiDate.format(java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(customStartDate!!)!!)} - ${DateFormatters.uiDate.format(java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(customEndDate!!)!!)}"
+                    "${
+                        DateFormatters.uiDate.format(
+                            java.text.SimpleDateFormat(
+                                "yyyy-MM-dd",
+                                Locale.getDefault()
+                            ).parse(customStartDate!!)!!
+                        )
+                    } - ${
+                        DateFormatters.uiDate.format(
+                            java.text.SimpleDateFormat(
+                                "yyyy-MM-dd",
+                                Locale.getDefault()
+                            ).parse(customEndDate!!)!!
+                        )
+                    }"
                 } else {
                     getDateRangeText(selectedTimePeriod, viewModel.selectedWeekOffset)
                 },
@@ -429,11 +437,14 @@ fun ScheduleScreen() {
                                         viewModel.updateSchedule(timePeriod = TimePeriod.WEEK)
                                     },
                                     colors = ButtonDefaults.buttonColors(
-                                        containerColor = MaterialTheme.colorScheme.primary,
-                                        contentColor = MaterialTheme.colorScheme.surface
+                                        containerColor = MaterialTheme.colorScheme.onSecondary,
+                                        contentColor = androidx.compose.ui.graphics.Color.White
                                     ),
                                     shape = RoundedCornerShape(20.dp),
-                                    contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp)
+                                    contentPadding = PaddingValues(
+                                        horizontal = 20.dp,
+                                        vertical = 8.dp
+                                    )
                                 ) {
                                     Row(
                                         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -722,12 +733,14 @@ fun DatePickerContent(
             Button(
                 onClick = {
                     if (startDate != null && endDate != null) {
-                        val start = java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
-                            Date(startDate!!)
-                        )
-                        val end = java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
-                            Date(endDate!!)
-                        )
+                        val start =
+                            java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
+                                Date(startDate!!)
+                            )
+                        val end =
+                            java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
+                                Date(endDate!!)
+                            )
                         onDatesSelected(start, end)
                     }
                 },
