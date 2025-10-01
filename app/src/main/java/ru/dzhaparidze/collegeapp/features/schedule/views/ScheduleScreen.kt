@@ -207,13 +207,13 @@ fun ScheduleScreen() {
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (selectedTimePeriod == TimePeriod.TODAY && customStartDate == null)
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.onSecondary
                         else
                             androidx.compose.ui.graphics.Color.Transparent,
                         contentColor = if (selectedTimePeriod == TimePeriod.TODAY && customStartDate == null)
-                            MaterialTheme.colorScheme.surface
+                            androidx.compose.ui.graphics.Color.White
                         else
-                            MaterialTheme.colorScheme.onSurfaceVariant
+                            MaterialTheme.colorScheme.onSurface
                     ),
                     elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),
                     contentPadding = PaddingValues(horizontal = 20.dp)
@@ -235,13 +235,13 @@ fun ScheduleScreen() {
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (selectedTimePeriod == TimePeriod.THREE_DAYS && customStartDate == null)
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.onSecondary
                         else
                             androidx.compose.ui.graphics.Color.Transparent,
                         contentColor = if (selectedTimePeriod == TimePeriod.THREE_DAYS && customStartDate == null)
-                            MaterialTheme.colorScheme.surface
+                            androidx.compose.ui.graphics.Color.White
                         else
-                            MaterialTheme.colorScheme.onSurfaceVariant
+                            MaterialTheme.colorScheme.onSurface
                     ),
                     elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),
                     contentPadding = PaddingValues(horizontal = 20.dp)
@@ -263,13 +263,13 @@ fun ScheduleScreen() {
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (selectedTimePeriod == TimePeriod.WEEK && customStartDate == null)
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.onSecondary
                         else
                             androidx.compose.ui.graphics.Color.Transparent,
                         contentColor = if (selectedTimePeriod == TimePeriod.WEEK && customStartDate == null)
-                            MaterialTheme.colorScheme.surface
+                            androidx.compose.ui.graphics.Color.White
                         else
-                            MaterialTheme.colorScheme.onSurfaceVariant
+                            MaterialTheme.colorScheme.onSurface
                     ),
                     elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),
                     contentPadding = PaddingValues(horizontal = 20.dp)
@@ -288,11 +288,11 @@ fun ScheduleScreen() {
                         containerColor = if (customStartDate != null && customEndDate != null)
                             MaterialTheme.colorScheme.primary
                         else
-                            MaterialTheme.colorScheme.primaryContainer,
+                            MaterialTheme.colorScheme.onSecondaryContainer,
                         contentColor = if (customStartDate != null && customEndDate != null)
                             MaterialTheme.colorScheme.surface
                         else
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.onSecondary
                     ),
                     elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),
                     contentPadding = PaddingValues(horizontal = 20.dp)
@@ -733,8 +733,8 @@ fun DatePickerContent(
                 },
                 enabled = startDate != null && endDate != null,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.surface
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onSurface
                 ),
                 elevation = ButtonDefaults.buttonElevation(2.dp, 2.dp, 0.dp, 2.dp, 2.dp),
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)

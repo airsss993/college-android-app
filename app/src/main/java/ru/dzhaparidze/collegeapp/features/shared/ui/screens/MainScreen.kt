@@ -1,12 +1,15 @@
 package ru.dzhaparidze.collegeapp.features.shared.ui.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import ru.dzhaparidze.collegeapp.features.schedule.views.ScheduleScreen
 import ru.dzhaparidze.collegeapp.features.settings.viewmodels.ThemeViewModel
 import ru.dzhaparidze.collegeapp.features.settings.views.AboutAppScreen
@@ -25,7 +28,8 @@ fun MainScreen(themeViewModel: ThemeViewModel) {
         bottomBar = {
             if (currentScreen.value != Screen.THEME_SELECTION && currentScreen.value != Screen.ABOUT_APP) {
                 NavigationBar(
-                    containerColor = MaterialTheme.colorScheme.background
+                    containerColor = MaterialTheme.colorScheme.background,
+                    tonalElevation = 0.dp
                 ) {
                     // РАСПИСАНИЕ
                     NavigationBarItem(
@@ -33,11 +37,18 @@ fun MainScreen(themeViewModel: ThemeViewModel) {
                         icon = {
                             Icon(
                                 Icons.Default.DateRange,
-                                "DateRangeIcon"
+                                contentDescription = null
                             )
                         },
                         label = { Text("Расписание") },
                         selected = currentScreen.value == Screen.SCHEDULE,
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = MaterialTheme.colorScheme.primary,
+                            selectedTextColor = MaterialTheme.colorScheme.primary,
+                            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     )
 
                     // НАСТРОЙКИ
@@ -46,11 +57,18 @@ fun MainScreen(themeViewModel: ThemeViewModel) {
                         icon = {
                             Icon(
                                 Icons.Default.Settings,
-                                "SettingIcon"
+                                contentDescription = null
                             )
                         },
                         label = { Text("Настройки") },
                         selected = currentScreen.value == Screen.SETTINGS,
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = MaterialTheme.colorScheme.primary,
+                            selectedTextColor = MaterialTheme.colorScheme.primary,
+                            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     )
                 }
             }

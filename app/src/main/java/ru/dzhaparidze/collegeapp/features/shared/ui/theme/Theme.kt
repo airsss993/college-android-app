@@ -1,7 +1,6 @@
 package ru.dzhaparidze.collegeapp.features.shared.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -16,7 +15,9 @@ private val LightColorScheme = lightColorScheme(
     onSurface = LightOnSurface,
     onBackground = LightOnBackground,
     surfaceVariant = LightSurfaceVariant,
-    onSurfaceVariant = LightOnSurfaceVariant
+    onSurfaceVariant = LightOnSurfaceVariant,
+    onSecondary = LightOnSecondary,
+    onSecondaryContainer = LightOnSecondaryContainer
 )
 
 private val DarkColorScheme = darkColorScheme(
@@ -28,7 +29,9 @@ private val DarkColorScheme = darkColorScheme(
     onSurface = DarkOnSurface,
     onBackground = DarkOnBackground,
     surfaceVariant = DarkSurfaceVariant,
-    onSurfaceVariant = DarkOnSurfaceVariant
+    onSurfaceVariant = DarkOnSurfaceVariant,
+    onSecondary = DarkOnSecondary,
+    onSecondaryContainer = DarkOnSecondaryContainer
 )
 
 @Composable
