@@ -162,7 +162,7 @@ fun AboutAppScreen(onBackClick: () -> Unit) {
                 role = "Android разработчик",
                 githubUrl = "https://github.com/airsss993",
                 telegramUrl = "https://t.me/airsss993",
-                showDivider = false
+                showDivider = true
             )
 
             DeveloperButton(
@@ -170,7 +170,7 @@ fun AboutAppScreen(onBackClick: () -> Unit) {
                 role = "iOS разработчик",
                 githubUrl = "https://github.com/anton1ks96",
                 telegramUrl = "https://t.me/IKolomatskii",
-                showDivider = true
+                showDivider = false
             )
         }
 
