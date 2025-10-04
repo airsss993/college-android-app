@@ -30,8 +30,8 @@ enum class TimePeriod(val displayName: String) {
 }
 
 fun getDateRangeText(timePeriod: TimePeriod, weekOffset: Int = 0): String {
-    val today = Date()
     val calendar = Calendar.getInstance()
+    val today = calendar.time
 
     return when (timePeriod) {
         TimePeriod.TODAY -> {
@@ -39,7 +39,6 @@ fun getDateRangeText(timePeriod: TimePeriod, weekOffset: Int = 0): String {
         }
 
         TimePeriod.THREE_DAYS -> {
-            calendar.time = today
             calendar.add(Calendar.DAY_OF_MONTH, 2)
             val endDate = calendar.time
 
@@ -47,9 +46,16 @@ fun getDateRangeText(timePeriod: TimePeriod, weekOffset: Int = 0): String {
         }
 
         TimePeriod.WEEK -> {
-            calendar.time = today
             calendar.firstDayOfWeek = Calendar.MONDAY
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+            val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+
+            if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
+                calendar.add(Calendar.WEEK_OF_YEAR, 1)
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+            } else {
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+            }
+
             calendar.add(Calendar.WEEK_OF_YEAR, weekOffset)
             val startOfWeek = calendar.time
 
@@ -739,7 +745,7 @@ fun ScheduleScreen() {
 @Composable
 fun DatePickerContent(
     onDatesSelected: (String, String) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     var startDate by remember { mutableStateOf<Long?>(null) }
     var endDate by remember { mutableStateOf<Long?>(null) }
@@ -914,7 +920,7 @@ fun DatePickerContent(
 @Composable
 fun CompactDatePicker(
     state: DatePickerState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     DatePicker(
         state = state,
