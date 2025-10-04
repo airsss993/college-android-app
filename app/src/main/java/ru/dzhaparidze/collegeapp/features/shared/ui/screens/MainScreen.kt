@@ -1,7 +1,6 @@
 package ru.dzhaparidze.collegeapp.features.shared.ui.screens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import ru.dzhaparidze.collegeapp.features.schedule.views.ScheduleScreen
