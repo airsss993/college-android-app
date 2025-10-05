@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.*
@@ -28,11 +29,22 @@ fun AboutAppScreen(onBackClick: () -> Unit) {
         "1.0.0"
     }
 
+    val versionCode = try {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+            context.packageManager.getPackageInfo(context.packageName, 0).longVersionCode
+        } else {
+            @Suppress("DEPRECATION")
+            context.packageManager.getPackageInfo(context.packageName, 0).versionCode.toLong()
+        }
+    } catch (e: Exception) {
+        1L
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()).padding(bottom = 16.dp)
     ) {
         Box(
             modifier = Modifier
@@ -85,7 +97,7 @@ fun AboutAppScreen(onBackClick: () -> Unit) {
             )
 
             Text(
-                text = "Версия $versionName",
+                text = "Версия $versionName ($versionCode)",
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 8.dp)
