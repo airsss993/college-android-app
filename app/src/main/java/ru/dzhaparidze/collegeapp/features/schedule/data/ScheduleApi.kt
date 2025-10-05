@@ -2,6 +2,7 @@ package ru.dzhaparidze.collegeapp.features.schedule.data
 
 import android.util.Log
 import io.ktor.http.HttpMethod
+import ru.dzhaparidze.collegeapp.BuildConfig
 import ru.dzhaparidze.collegeapp.core.networking.Endpoint
 import ru.dzhaparidze.collegeapp.core.networking.HttpClient.send
 import ru.dzhaparidze.collegeapp.features.schedule.models.ScheduleResponse
@@ -37,12 +38,12 @@ class ScheduleAPI : ScheduleAPIInterface {
             ),
         )
 
-        val url = "http://79.174.86.248:8500${endpoint.path}"
+        val url = "${BuildConfig.API_BASE_URL}${endpoint.path}"
         Log.d("ScheduleAPI", "Request URL: $url")
         Log.d("ScheduleAPI", "Params: ${endpoint.queryParams}")
 
         return try {
-            val baseUrl = "http://79.174.86.248:8500"
+            val baseUrl = BuildConfig.API_BASE_URL
             Log.d("ScheduleAPI", "Using base URL: $baseUrl")
 
             val response = send<ScheduleResponse>(endpoint, baseUrl)

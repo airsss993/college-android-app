@@ -11,6 +11,17 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        load(FileInputStream(localPropertiesFile))
+    }
+}
+
+fun getEnvVariable(key: String, defaultValue: String = ""): String {
+    return localProperties.getProperty(key) ?: System.getenv(key) ?: defaultValue
+}
+
 android {
     namespace = "ru.dzhaparidze.collegeapp"
     compileSdk = 36
@@ -23,6 +34,8 @@ android {
         versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_BASE_URL", "\"${getEnvVariable("API_BASE_URL", "http://localhost:8500")}\"")
     }
 
     signingConfigs {
@@ -60,6 +73,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     applicationVariants.all {
