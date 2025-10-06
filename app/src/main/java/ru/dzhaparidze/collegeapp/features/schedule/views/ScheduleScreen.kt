@@ -104,7 +104,7 @@ fun ScheduleScreen() {
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
     ) {
         Text(
@@ -520,7 +520,8 @@ fun ScheduleScreen() {
                 } else {
                     LazyColumn(
                         modifier = Modifier.padding(horizontal = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        contentPadding = PaddingValues(bottom = 100.dp)
                     ) {
                         val eventsByDay = events.groupBy { it.day }
 
