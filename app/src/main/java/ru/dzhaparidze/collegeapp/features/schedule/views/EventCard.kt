@@ -9,7 +9,6 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
 import ru.dzhaparidze.collegeapp.features.schedule.models.ScheduleEvent
@@ -128,7 +127,6 @@ fun EventCard(event: ScheduleEvent) {
                         }
                     }
 
-                    // КНОПКА С ПОДГРУППАМИ
                     if (hasSubGroups) {
                         Box(
                             modifier = Modifier

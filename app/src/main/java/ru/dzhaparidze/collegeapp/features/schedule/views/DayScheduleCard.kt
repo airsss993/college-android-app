@@ -42,7 +42,7 @@ fun DayScheduleCard(day: String, events: List<ScheduleEvent>) {
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant
                     ),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(7.dp)
                 ) {
                     Text(
                         text = "${events.size} ${getEventCountText(events.size)}",
@@ -65,8 +65,8 @@ fun DayScheduleCard(day: String, events: List<ScheduleEvent>) {
 
 private fun getEventCountText(count: Int): String {
     return when {
-        count % 10 == 1 && count % 100 != 11 -> "занятие"
-        count % 10 in 2..4 && (count % 100 < 10 || count % 100 >= 20) -> "занятия"
-        else -> "занятий"
+        count % 10 == 1 && count % 100 != 11 -> "пара"
+        count % 10 in 2..4 && (count % 100 < 10 || count % 100 >= 20) -> "пары"
+        else -> "пар"
     }
 }

@@ -11,6 +11,7 @@ interface ScheduleAPIInterface {
     suspend fun fetchSchedule(
         group: String,
         subgroup: String,
+        englishGroup: String,
         start: String,
         end: String
     ): ScheduleResponse
@@ -20,22 +21,29 @@ class ScheduleAPI : ScheduleAPIInterface {
     override suspend fun fetchSchedule(
         group: String,
         subgroup: String,
+        englishGroup: String,
         start: String,
         end: String
     ): ScheduleResponse {
         Log.d("ScheduleAPI", "Send request to get schedule")
-        Log.d("ScheduleAPI", "Group: $group, Subgroup: $subgroup")
+        Log.d("ScheduleAPI", "Group: $group, Subgroup: $subgroup, English: $englishGroup")
         Log.d("ScheduleAPI", "Range: $start - $end")
+
+        val queryParams = mutableMapOf(
+            "group" to group,
+            "subgroup" to subgroup,
+            "start" to start,
+            "end" to end
+        )
+
+        if (englishGroup.isNotEmpty() && englishGroup != "*") {
+            queryParams["english_group"] = englishGroup
+        }
 
         val endpoint = Endpoint(
             path = "/api/v1/schedule",
             method = HttpMethod.Get,
-            queryParams = mapOf(
-                "group" to group,
-                "subgroup" to subgroup,
-                "start" to start,
-                "end" to end
-            ),
+            queryParams = queryParams,
         )
 
         val url = "${BuildConfig.API_BASE_URL}${endpoint.path}"

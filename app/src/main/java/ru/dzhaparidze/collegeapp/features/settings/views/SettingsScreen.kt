@@ -22,7 +22,7 @@ import ru.dzhaparidze.collegeapp.features.settings.data.ThemeMode
 fun SettingsScreen(
     currentTheme: ThemeMode,
     onThemeClick: () -> Unit,
-    onInfoClick: () -> Unit
+    onInfoClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -34,7 +34,7 @@ fun SettingsScreen(
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(start = 16.dp, top = 86.dp, end = 16.dp, bottom = 16.dp)
+            modifier = Modifier.padding(start = 16.dp, top = 76.dp, end = 16.dp, bottom = 32.dp)
         )
 
         Text(

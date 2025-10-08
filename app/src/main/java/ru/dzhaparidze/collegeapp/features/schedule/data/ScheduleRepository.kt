@@ -6,6 +6,7 @@ interface ScheduleRepositoryInterface {
     suspend fun getSchedule(
         group: String,
         subgroup: String,
+        englishGroup: String,
         start: String,
         end: String
     ): List<ScheduleEvent>
@@ -15,10 +16,11 @@ class ScheduleRepository(private val api: ScheduleAPI) : ScheduleRepositoryInter
     override suspend fun getSchedule(
         group: String,
         subgroup: String,
+        englishGroup: String,
         start: String,
         end: String
     ): List<ScheduleEvent> {
-        val response = api.fetchSchedule(group, subgroup, start, end)
+        val response = api.fetchSchedule(group, subgroup, englishGroup, start, end)
         val events = response.event.sortedWith { a, b ->
             if (a.day != b.day) {
                 a.day.compareTo(b.day)
