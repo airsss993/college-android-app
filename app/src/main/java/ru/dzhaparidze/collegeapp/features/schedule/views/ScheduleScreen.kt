@@ -2,7 +2,6 @@ package ru.dzhaparidze.collegeapp.features.schedule.views
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.*
 import androidx.compose.material.icons.*
@@ -10,7 +9,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.style.*
@@ -133,69 +132,76 @@ fun ScheduleScreen() {
 
         // ВЫПАДАЮЩИЕ СПИСКИ С ГРУППАМИ
         Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .height(68.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Card(
                 modifier = Modifier
                     .weight(1f)
+                    .clip(RoundedCornerShape(12.dp))
                     .clickable { showGroupSheet = true },
+                shape = RoundedCornerShape(12.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface
-                ),
-                shape = RoundedCornerShape(12.dp)
+                )
             ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.SpaceAround
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(12.dp)
                 ) {
-                    Text(
-                        text = "Группа",
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
+                    Column(
+                        modifier = Modifier.fillMaxWidth()
                     ) {
+                        Text(
+                            text = "Группа",
+                            fontSize = 13.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+
                         Text(
                             text = selectedGroup,
                             fontSize = 18.sp,
                             color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold
                         )
-                        Spacer(modifier = Modifier.weight(1f))
-                        Icon(
-                            Icons.Default.KeyboardArrowDown,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
                     }
+
+                    Icon(
+                        Icons.Default.KeyboardArrowDown,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.align(Alignment.CenterEnd)
+                    )
                 }
             }
 
             Card(
                 modifier = Modifier
                     .weight(1f)
+                    .clip(RoundedCornerShape(12.dp))
                     .clickable { showSubgroupSheet = true },
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface
                 ),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.SpaceAround
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(12.dp),
                 ) {
-                    Text(
-                        text = "Подгруппа",
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
+                    Column(
+                        modifier = Modifier.fillMaxWidth()
                     ) {
+                        Text(
+                            text = "Подгруппа",
+                            fontSize = 13.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+
                         Text(
                             text = when {
                                 selectedMainSubgroup.isEmpty() && selectedEnglishSubgroup.isEmpty() -> "Все"
@@ -207,13 +213,14 @@ fun ScheduleScreen() {
                             color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold
                         )
-                        Spacer(modifier = Modifier.weight(1f))
-                        Icon(
-                            Icons.Default.KeyboardArrowDown,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
                     }
+
+                    Icon(
+                        Icons.Default.KeyboardArrowDown,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.align(Alignment.CenterEnd)
+                    )
                 }
             }
         }
@@ -562,7 +569,7 @@ fun ScheduleScreen() {
                                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
                             ) {
                                 Text(
-                                    text = "Отмена", fontSize = 16.sp
+                                    text = "Отмена", fontSize = 14.sp
                                 )
                             }
                         }
@@ -573,7 +580,8 @@ fun ScheduleScreen() {
                             Text(
                                 text = "Выбор группы",
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 18.sp
+                                fontSize = 18.sp,
+                                textAlign = TextAlign.Center,
                             )
                         }
 
@@ -586,6 +594,7 @@ fun ScheduleScreen() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 4.dp)
+                                    .clip(RoundedCornerShape(12.dp))
                                     .clickable {
                                         selectedGroup = group
 
@@ -665,12 +674,15 @@ fun ScheduleScreen() {
                             ), contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
                         ) {
                             Text(
-                                text = "Отмена", fontSize = 16.sp
+                                text = "Отмена", fontSize = 14.sp
                             )
                         }
 
                         Text(
-                            text = "Выбор подгруппы", fontWeight = FontWeight.Bold, fontSize = 18.sp
+                            text = "Выбор подгруппы",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            textAlign = TextAlign.Center,
                         )
 
                         Button(
@@ -702,7 +714,7 @@ fun ScheduleScreen() {
                             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
                         ) {
                             Text(
-                                text = "Применить", fontSize = 16.sp
+                                text = "Применить", fontSize = 14.sp
                             )
                         }
                     }
@@ -713,6 +725,7 @@ fun ScheduleScreen() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 4.dp)
+                                    .clip(RoundedCornerShape(12.dp))
                                     .clickable {
                                         selectedMainSubgroup = ""
                                         selectedEnglishSubgroup = ""
@@ -743,6 +756,7 @@ fun ScheduleScreen() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 4.dp)
+                                    .clip(RoundedCornerShape(12.dp))
                                     .clickable {
                                         tempSelectedMainSubgroup = subgroup
                                     }, colors = CardDefaults.cardColors(
@@ -787,6 +801,7 @@ fun ScheduleScreen() {
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(vertical = 4.dp)
+                                        .clip(RoundedCornerShape(12.dp))
                                         .clickable {
                                             selectedMainSubgroup = tempSelectedMainSubgroup
                                             selectedEnglishSubgroup = ""
@@ -833,6 +848,7 @@ fun ScheduleScreen() {
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(vertical = 4.dp)
+                                        .clip(RoundedCornerShape(12.dp))
                                         .clickable {
                                             selectedMainSubgroup = tempSelectedMainSubgroup
                                             selectedEnglishSubgroup = englishSubgroup
@@ -935,11 +951,12 @@ fun DatePickerContent(
                 elevation = ButtonDefaults.buttonElevation(2.dp, 2.dp, 0.dp, 2.dp, 2.dp),
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
             ) {
-                Text("Отмена", fontSize = 16.sp)
+                Text("Отмена", fontSize = 14.sp)
             }
 
             Text(
-                text = "Выбор периода", fontWeight = FontWeight.Bold, fontSize = 20.sp
+                text = "Выбор периода", fontWeight = FontWeight.Bold, fontSize = 20.sp,
+                textAlign = TextAlign.Center,
             )
 
             Button(
@@ -964,7 +981,7 @@ fun DatePickerContent(
                 elevation = ButtonDefaults.buttonElevation(2.dp, 2.dp, 0.dp, 2.dp, 2.dp),
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
             ) {
-                Text("Применить", fontSize = 16.sp)
+                Text("Применить", fontSize = 14.sp)
             }
         }
 
@@ -977,6 +994,7 @@ fun DatePickerContent(
             Card(
                 modifier = Modifier
                     .weight(1f)
+                    .clip(RoundedCornerShape(8.dp))
                     .clickable { selectingStartDate = true },
                 colors = CardDefaults.cardColors(
                     containerColor = if (selectingStartDate) MaterialTheme.colorScheme.primary
@@ -1008,6 +1026,7 @@ fun DatePickerContent(
             Card(
                 modifier = Modifier
                     .weight(1f)
+                    .clip(RoundedCornerShape(8.dp))
                     .clickable { selectingStartDate = false },
                 colors = CardDefaults.cardColors(
                     containerColor = if (!selectingStartDate) MaterialTheme.colorScheme.primary

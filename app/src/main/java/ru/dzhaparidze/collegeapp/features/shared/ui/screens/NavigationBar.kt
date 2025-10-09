@@ -1,8 +1,7 @@
 package ru.dzhaparidze.collegeapp.features.shared.ui.screens
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
@@ -11,7 +10,9 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.*
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
 
@@ -28,11 +29,12 @@ fun CustomNavBar(
     ) {
         Surface(
             shape = RoundedCornerShape(50.dp),
+            border = BorderStroke(1.6.dp, MaterialTheme.colorScheme.scrim),
             shadowElevation = 5.dp,
         ) {
             Row(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.5f))
+                    .background(MaterialTheme.colorScheme.surface)
                     .padding(vertical = 6.dp, horizontal = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
@@ -55,7 +57,7 @@ fun CustomNavBar(
 @Composable
 private fun NavBarItem(
     isSelected: Boolean,
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     label: String,
     onClick: () -> Unit,
 ) {
@@ -74,22 +76,29 @@ private fun NavBarItem(
     else
         MaterialTheme.colorScheme.onSurfaceVariant
 
-    val textColor = if (isSelected)
-        MaterialTheme.colorScheme.primary
-    else
-        MaterialTheme.colorScheme.onSurfaceVariant
+    val iconOffsetY by animateDpAsState(
+        targetValue = if (isSelected) (-8).dp else 0.dp,
+        animationSpec = tween(durationMillis = 250)
+    )
 
-    Column(
+    val textAlpha by animateFloatAsState(
+        targetValue = if (isSelected) 1f else 0f,
+        animationSpec = tween(durationMillis = 250)
+    )
+
+    Box(
         modifier = Modifier
+            .width(100.dp)
+            .height(60.dp)
             .clip(RoundedCornerShape(50.dp))
             .background(backgroundColor)
-            .clickable(onClick = onClick)
-            .padding(horizontal = 20.dp, vertical = 8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
     ) {
         Icon(
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier
+                .size(26.dp)
+                .offset(y = iconOffsetY),
             imageVector = icon,
             tint = iconColor,
             contentDescription = null
@@ -99,7 +108,10 @@ private fun NavBarItem(
             text = label,
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Medium,
-            color = textColor
+            color = MaterialTheme.colorScheme.primary.copy(alpha = textAlpha),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .offset(y = (-10).dp)
         )
     }
 }

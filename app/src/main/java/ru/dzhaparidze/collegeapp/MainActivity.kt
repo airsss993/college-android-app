@@ -4,14 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.*
 import androidx.compose.ui.tooling.preview.*
 import ru.dzhaparidze.collegeapp.features.settings.data.ThemeMode
 import ru.dzhaparidze.collegeapp.features.settings.viewmodels.ThemeViewModel
-import ru.dzhaparidze.collegeapp.features.settings.views.AboutAppScreen
-import ru.dzhaparidze.collegeapp.features.settings.views.ThemeSelectionScreen
 import ru.dzhaparidze.collegeapp.features.shared.ui.screens.MainScreen
 import ru.dzhaparidze.collegeapp.features.shared.ui.theme.AppTheme
 
@@ -49,22 +47,22 @@ fun MainPreview() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun AboutAppPreview() {
-    AppTheme {
-        AboutAppScreen(onBackClick = {})
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ThemeSelectionPreview() {
-    AppTheme {
-        ThemeSelectionScreen(
-            currentTheme = ThemeMode.SYSTEM,
-            onThemeSelected = {},
-            onBackClick = {}
-        )
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun AboutAppPreview() {
+//    AppTheme {
+//        AboutAppScreen(onBackClick = {})
+//    }
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun ThemeSelectionPreview() {
+//    AppTheme {
+//        ThemeSelectionScreen(
+//            currentTheme = ThemeMode.SYSTEM,
+//            onThemeSelected = {},
+//            onBackClick = {}
+//        )
+//    }
+//}
